@@ -86,7 +86,7 @@ defaults:
       type: "posts"
     values:
       layout: "post"
-      comments: true  # add comments to all blog posts
+      comments: false  # add comments to all blog posts
       author: "Leonardo José"
   -
     scope:
