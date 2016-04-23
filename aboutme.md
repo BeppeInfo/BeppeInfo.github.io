@@ -1,17 +1,16 @@
 ---
 layout: page
 title: About me
-subtitle: Never forget where you came from
+subtitle: \"Never forget where you came from\"
 show-avatar: true
 ---
 
-My name is Inigo Montoya. I have the following qualities:
+My name is Leonardo José Consoni. I'm currently a Master's Degree Engineering student from the University of São Paulo, in Brazil.
 
-- I rock a great mustache
-- I'm extremely loyal to my family
+I'm interested in or work with:
 
-What else do you need?
-
-### my history
-
-To be honest, I'm having some trouble remembering right now, so why don't you just watch [my movie](http://en.wikipedia.org/wiki/The_Princess_Bride_%28film%29) and it will answer **all** your questions.
+- Computer programming (duh)
+- Open-Source software/hardware (too mainstream)
+- Bioengineering/Rehabilitation Engineering (somehow related to the first two)
+- Military History (wait, what ?)
+- A little Philosophy (ok, now that's getting weird...)
