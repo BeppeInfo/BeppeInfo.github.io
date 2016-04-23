@@ -1,7 +1,7 @@
 ---
 layout: page
 title: About me
-subtitle: \"Never forget where you came from\"
+subtitle: "Never forget where you came from"
 show-avatar: true
 ---
 
