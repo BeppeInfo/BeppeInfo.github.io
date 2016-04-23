@@ -1,5 +1,6 @@
 ---
 layout: post
+author: Leonardo José
 title: Why this blog name ?
 subtitle: Feeling down, bro ?
 category: thoughts
