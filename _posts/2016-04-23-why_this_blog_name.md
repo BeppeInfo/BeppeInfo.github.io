@@ -1,7 +1,7 @@
 ---
 layout: post
 author: Leonardo José
-title: Why this blog name ?
+title: What's up with the blog name ?
 subtitle: Feeling down, bro ?
 category: thoughts
 ---
