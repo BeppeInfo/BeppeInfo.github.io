@@ -2,6 +2,7 @@
 layout: post
 title: Why this blog name ?
 subtitle: Feeling down, bro ?
+category: thoughts
 ---
 
 Be it from a naturalist or spiritual point of view, it's easy to get the notion that we are really small.
@@ -22,7 +23,7 @@ Pretty much this. Call us crazy if you want. But from here we proceed like it ma
 
 Obviously you can't succeed (and by "succeed" I mean at least leaving something useful and being recongnized for it) in all possible fronts, so you have to pick one or two, I guess.
 
-For now I'm trying programming, partly because I really like it and partly because it gives the feeling of being me doing much more than what is actually being done, lol.
+For now, I'm trying programming, partly because I really like it and partly because it gives me the feeling of doing much more than what is actually being done, lol.
 
 Mandatory XKCD comic strip:
 
