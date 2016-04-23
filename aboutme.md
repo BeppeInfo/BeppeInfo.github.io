@@ -14,3 +14,5 @@ I'm interested in or work with:
 - Bioengineering/Rehabilitation Engineering (somehow related to the first two)
 - Military History (wait, what ?)
 - A little Philosophy (ok, now that's getting weird...)
+
+You can take a look on my LinkedIn for more technical information about what I do (talk about laziness).
