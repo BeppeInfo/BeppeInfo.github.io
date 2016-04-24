@@ -7,7 +7,7 @@ categories: [programming, gsoc]
 
 One of the biggest problems of most open source software organizations is the lack of manpower a.k.a. developers. Great projects can just fade away or never materialize because of that.
 
-To help with this, each year, Google organizes an event for drawing students to work on open source software projects, during the (northern hemisphere) summer vacations. This is called the [Google Summer of Code](https://developers.google.com/open-source/gsoc/), or simply GSoC. The main goal is to introduce new young programmers to those communities, so that they become long time contributors. 
+To help with this, each year, Google organizes an event for attracting students to work on open source software projects, during the (northern hemisphere) summer vacations. This is called the [Google Summer of Code](https://developers.google.com/open-source/gsoc/), or simply GSoC. The main goal is to introduce new young programmers to those communities, so that they become long time contributors. 
 
 ![GSoc](https://www.honeynet.org/sites/default/files/banner-gsoc2016_2.png)
 
