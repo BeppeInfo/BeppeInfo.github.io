@@ -23,15 +23,15 @@ After exchanging some messages with one of the Scilab developers (Clément David
 
 Last friday, day of the chosen students announcement, I received the call of duty:
 
-"Hi leonardojc,
-
-Welcome to GSoC 2016!
-
-Your proposal Native Scilab Kernel for Jupyter has been accepted!
-
-We look forward to seeing the great things you will accomplish this summer with Scilab Enterprises.
-
-[...]"
+>Hi leonardojc,
+>
+>Welcome to GSoC 2016!
+>
+>Your proposal Native Scilab Kernel for Jupyter has been accepted!
+>
+>We look forward to seeing the great things you will accomplish this summer with Scilab Enterprises.
+>
+>[...]
 
 So now I'm in. No turning back.
 
