@@ -1,6 +1,5 @@
 ---
 layout: post
-author: Leonardo José
 title: What's up with the blog name ?
 subtitle: Feeling down, bro ?
 category: thoughts
