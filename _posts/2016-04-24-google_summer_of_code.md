@@ -3,7 +3,7 @@ layout: post
 title: My participation on Google Summer of Code 2016
 subtitle: Did they really select me ?
 category: Programming
-tags: [Gsoc,Scilab]
+tags: [Gsoc, Scilab]
 ---
 
 One of the biggest problems of most open source software organizations is the lack of manpower a.k.a. developers. Great project ideas can just fade away or never materialize because of that.
