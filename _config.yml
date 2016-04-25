@@ -23,8 +23,11 @@ description: A Personal blog about computer programming projects and everything 
 
 # List of links in the navigation bar
 navbar-links:
+  Browse:
+    - By Category: "browse_categories"
+    - By Tag: "browse_tags"
   About Me: "aboutme"
-  Search: "search"
+  # Search: "search"
   #Resources:
   #  - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
   #  - Learn markdown: "http://www.markdowntutorial.com/"
