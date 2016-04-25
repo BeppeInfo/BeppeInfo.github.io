@@ -2,7 +2,7 @@
 layout: post
 title: What's up with the blog name ?
 subtitle: Feeling down, bro ?
-category: thoughts
+category: Thoughts
 ---
 
 Be it from a naturalist or spiritual point of view, it's easy to get the notion that we are really small.
