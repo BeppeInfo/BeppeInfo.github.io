@@ -2,7 +2,8 @@
 layout: post
 title: My participation on Google Summer of Code 2016
 subtitle: Did they really select me ?
-categories: [programming, gsoc]
+category: programming
+tags: [gsoc,scilab]
 ---
 
 One of the biggest problems of most open source software organizations is the lack of manpower a.k.a. developers. Great project ideas can just fade away or never materialize because of that.
@@ -13,7 +14,7 @@ To help with this, each year, Google organizes an event for attracting students 
 
 It's really awesome that Google uses its tremendous influence and resources to promote something like this (even paying for the summer work !). As much as this is great, I honestly still wonder why they do this. Maybe Google indirectly benefits from the stronger open source ecossystem (as the company itself hosts numerous open projects). Maybe they're just so damn nice.
 
-As an computer programming and open source entusiast myself, for years, I followed many GSoC editions, excited about the new developments. After postponing it for a long time due to lack of confidence in my abilities (after all, I'm a engineer, not a computer scientist), I realized that my time as a student was running out and took a chance to participate this year (oh, the unstopable force of despair...).
+As an computer programming and open source entusiast myself, for years, I followed many GSoC editions, excited about the new developments. After postponing it for a long time due to lack of confidence in my abilities (after all, I'm a engineer, not a computer scientist), I realized that my time as a student was running out and took a chance to participate this year (oh, the unstoppable force of despair...).
 
 Looking for an organization to get in touch with, I noticed Scilab Enterprises, host of [Scilab](http://www.scilab.org/) software, a tool I started using years ago as a result of my search for a free and open alternative to the expensive and ubiquitous [Matlab](http://www.mathworks.com/products/matlab/?requestedDomain=www.mathworks.com) package.
 
