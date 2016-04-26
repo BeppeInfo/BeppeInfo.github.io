@@ -52,6 +52,8 @@ Like... this level of coolness: ![cool](https://s-media-cache-ak0.pinimg.com/736
 
 But, y'know, there is this nice thing called [Jupyter](http://jupyter.org/)
 
+![Jupyter_logo](http://jupyter.org/assets/main-logo.svg)
+
 "Oh, man ! Look at th.... wait, what is it ?"
 
 Basically (AFAIK), a way to use different interpreted programming languages (mainly mathematical, data science and scientific computing ones) from the same Shell/GUI, calling functions, visualizing data in text or graphical format, playing with interactive interfaces... everything that your language of choice offers.
