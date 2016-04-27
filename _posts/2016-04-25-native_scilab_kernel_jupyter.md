@@ -30,7 +30,7 @@ A software hipster, maybe.
 
 In my course there isn't that many software entusiasts like myself. People tend to use whatever works and is well established and get things done. And that practical posture (which is really positive sometimes) leaded to a culture of perpetuating the usage of Matlab for any task involving programming, calculations and data visualization.
 
-I can't help but feel that people are learning to hammer nails with a damn big golden sledgehammer. My interest for software makes me very avid for finding a more optimal (which I generally see as leaner) solution for computing works, and Matlab seems so full of dependencies that you pull just to plot a Bode diagram....
+I can't help but feel that people are learning to hammer nails with a damn big golden sledgehammer. My interest for software makes me very avid for finding an optimal (which I generally see as leaner) solution for computing works, and Matlab seems so full of dependencies that you pull just to plot a Bode diagram....
 
 ![overengineering](https://i.imgur.com/JPsizDt.jpg)
 
