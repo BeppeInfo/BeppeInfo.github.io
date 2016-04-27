@@ -12,7 +12,7 @@ Anyways, let's move on.)
 
 As said on the previous blog post, this time I'm going to talk more specifically about my GSoC project, which is named "A Native Scilab Kernel for Jupyter".
 
-So, what is it ?
+"So, what is it ?"
 
 Well, from my point of view, is a good opportunity to change the views of some of my colleagues.
 
