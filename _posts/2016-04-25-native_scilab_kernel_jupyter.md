@@ -3,7 +3,7 @@ layout: post
 title: My 2016 GSoC Project - Part I
 subtitle: Jupyter, Scilab, and why Matlab kinda sucks
 category: Programming
-tags: [GSoC, Scilab]
+tags: [GSoC, Scilab, Jupyter]
 --- 
 
 (Before we start, I must say that, according to GSoC [calendar](https://developers.google.com/open-source/gsoc/timeline), the program is now at the [Community Bonding Period](http://googlesummerofcode.blogspot.com.br/2007/04/so-what-is-this-community-bonding-all.html), not the coding phase itself. So, I really should be talking to the devs to plan my work for the coming months instead of writing ego-feeding hype posts, lol.
