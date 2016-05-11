@@ -52,7 +52,7 @@ This motivated me to write some test code (actually, it's a modified example):
 
 {% highlight c %}
 //
-//  Hello World server in C++
+//  "Hello World" server in C++
 //  Binds STREAM socket to tcp://*:5555
 //
 #include <zmq.hpp>
