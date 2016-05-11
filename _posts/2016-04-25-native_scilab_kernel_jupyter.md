@@ -18,7 +18,9 @@ Well, from my point of view, is a good opportunity to change the views of some o
 
 "What ?"
 
-![let_me_explain](/img/kevin-hart-let-me-explain.jpg)
+<p align="center">
+  <img src="/img/kevin-hart-let-me-explain.jpg">
+</p>
 
 At the Mechatronics Engineering course, a mathematical tool for simulation is more than mandatory. And that tool pretty much always ends up being Matlab.
 
@@ -32,7 +34,9 @@ In my course there isn't that many software entusiasts like myself. People tend 
 
 I can't help but feel that people are learning to hammer nails with a damn big golden sledgehammer. My interest for software makes me very avid for finding an optimal (which I generally see as leaner) solution for computing works, and Matlab seems so full of dependencies that you pull just to plot a Bode diagram....
 
-![overengineering](https://i.imgur.com/JPsizDt.jpg)
+<p align="center">
+  <img src="https://i.imgur.com/JPsizDt.jpg">
+</p>
 
 Engineering is all about applying "the right tool for the job", right ?
 
