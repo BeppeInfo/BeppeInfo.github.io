@@ -27,7 +27,7 @@ After the reality check, I noticed the **ZMQ_STREAM** option that I mentioned on
 
 So I thought, stubborn as always: "Why not **UDP** then?".
 
-After a little more careful coding, [I submitted a pull request for RAW Datagram (UDP) sockets](https://github.com/zeromq/libzmq/pull/1986), under the option **ZMQ_DGRAM**. The developers actually got interested in the idea, and after a long (in the good sense of the word) exchange of opinions, which helped me to improve the patch and (try) to make it work, while learning a lot about **ZeroMQ** internals.
+After a little more careful coding, [I submitted a pull request for RAW Datagram (UDP) sockets](https://github.com/zeromq/libzmq/pull/1986), under the option **ZMQ_DGRAM**. The developers actually got interested in the idea, and there was a long (in the good sense of the word) exchange of opinions, which helped me to improve the patch and (try) to make it work, while learning a lot about **ZeroMQ** internals.
 
 In the end, my **PR** itself wasn't merged, but **somdoron** offered to take my code, fix it and push it to the main tree (have I already mentioned how nice he is ?). Besides, for this partial contribution, [my name was added to the project's **AUTHORS** file](https://github.com/zeromq/libzmq/commit/5f0ac2aebe5f0633c93244ca5c26f54d8e5d17f0), so now it's official: **Behold, mortals, I'm a contributor**.
 
