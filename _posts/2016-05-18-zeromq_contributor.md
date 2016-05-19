@@ -13,7 +13,7 @@ In the previous post I mentioned:
 Well, looks like it came sooner than expected:
 
 
-As awesome as **ZeroMQ** is, something about it that instantly bothered me is the lack of [UDP](https://en.wikipedia.org/wiki/User_Datagram_Protocol) support. For applications where it would make sense to use **ZeroMQ** and low latency is a greater concern than reliability, like some which I have, that option is really missed.
+As awesome as **ZeroMQ** is, something about it that instantly bothered me about it is the lack of [UDP](https://en.wikipedia.org/wiki/User_Datagram_Protocol) support. For applications where it would make sense to use **ZeroMQ** and low latency is a greater concern than reliability (which [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) would provide), like some that I'm working on, that option is really missed.
 
 Again, I'm not the only one thinking that way, and **UDP** support [had been request for a long time](https://github.com/zeromq/libzmq/issues/807). But recently one of the main developers, **Doron Somech** or **somdoron** on **Github** (great guy, by the way), added **UDP** for one of the new **ZeroMQ** communication patterns, **Radio-Dish** (like a thread-safe **Publisher-Subscriber**), to be available in the forthcoming release (**4.2.0**).
 
