@@ -25,7 +25,7 @@ But... But... I do really want to use **UDP**... (*insert river crying here*)
 
 After the reality check, I noticed the **ZMQ_STREAM** option that I mentioned on my last post, exactly intended for communicating with conventional **TCP** clients and servers. 
 
-So I thought, as stubborn as always: "Why not **UDP** then?".
+So I thought, stubborn as always: "Why not **UDP** then?".
 
 After a little more careful coding, [I submitted a pull request for RAW Datagram (UDP) sockets](https://github.com/zeromq/libzmq/pull/1986), under the option **ZMQ_DGRAM**. The developers actually got interested in the idea, and after a long (in the good sense of the word) exchange of opinions, which helped me to improve the patch and (try) to make it work, while learning a lot about **ZeroMQ** internals.
 
