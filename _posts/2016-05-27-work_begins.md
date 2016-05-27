@@ -3,7 +3,7 @@ layout: post
 title: My 2016 GSoC Project - Part III
 subtitle: Work begins
 category: Programming
-tags: [GSoC, ZeroMQ, Jupyter]
+tags: [GSoC, Jupyter]
 --- 
 
 May 23 marked the beginning of **Coding Period** for **GSoC**. [As I wasn't kicked due to my lack of communication] That means it's time to do some real work on my project.
