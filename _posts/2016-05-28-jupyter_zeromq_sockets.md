@@ -163,4 +163,4 @@ As you can see, not even input is requested, and we can't send an exit command, 
 You can see from the docs and the console output, there are **.json** configuration files being read. This involves an important aspect of **Jupyter** about which I'll talk later.
 
 
-Thanks for reading and until next time !
+That's it for now. Thanks for reading and until next time !
