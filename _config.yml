@@ -67,6 +67,8 @@ footer-links-active:
 
 # --- Misc --- #
 
+gems: [jekyll-paginate]
+
 # Fill in your Disqus shortname (NOT the userid) if you want to support Disqus comments
 # disqus: "tinybitsofexistence"
 
