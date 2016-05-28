@@ -1,6 +1,6 @@
 ---
 layout: post
-title: My 2016 GSoC Project - Part IIIa
+title: My 2016 GSoC Project - Part IV
 subtitle: Jupyter ZeroMQ Sockets
 category: Programming
 tags: [GSoC, ZeroMQ, Jupyter]
