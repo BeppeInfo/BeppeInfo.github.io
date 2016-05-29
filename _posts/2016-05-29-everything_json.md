@@ -130,29 +130,29 @@ int main( int argc, char* argv[] )
   std::string connectionIPHost = connectionConfig.get( "ip", "*" ).asString();
   std::string connectionKey = connectionConfig.get( "key", "a0436f6c-1916-498b-8eb9-e81ab9368e84" ).asString();
   std::string signatureScheme = connectionConfig.get( "signature_scheme", "hmac-sha256" ).asString();
-
+  
   // Every ZeroMQ application should create its own unique context
   zmq::context_t context( 1 );
-
+  
   // Creating I/O Pub socket on arbitrary port
   zmq::socket_t ioPubSocket( context, ZMQ_PUB );
   ioPubSocket.bind( connectionTransport + "://" + connectionIPHost + ":" + connectionConfig.get( "iopub_port", "0" ).asString() );
-
+  
   // Creating Control socket on arbitrary port
   zmq::socket_t controlSocket( context, ZMQ_ROUTER );
   controlSocket.bind( connectionTransport + "://" + connectionIPHost + ":" + connectionConfig.get( "control_port", "0" ).asString() );
-
+  
   // Creating Stdin socket on arbitrary port
   zmq::socket_t stdinSocket( context, ZMQ_ROUTER );
   stdinSocket.bind( connectionTransport + "://" + connectionIPHost + ":" + connectionConfig.get( "stdin_port", "0" ).asString() );
-
+  
   // Creating Shell socket on arbitrary port
   zmq::socket_t shellSocket( context, ZMQ_ROUTER );
   shellSocket.bind( connectionTransport + "://" + connectionIPHost + ":" + connectionConfig.get( "shell_port", "0" ).asString() );
 
   // Run Heartbeat thread. Context is thread-safe, so we can safely pass it
   std::thread heartbeatThread( HeartbeatLoopRun, &context, connectionTransport + "://" + connectionIPHost + ":" + connectionConfig.get( "hb_port", "0" ).asString() );
-
+  
   // Poller for detecting incoming Shell and Control request messages
   zmq::pollitem_t requestsPoller[ 4 ];
   // Overloaded (void*) cast operator. Returns underlying socket_t::ptr member
@@ -164,11 +164,10 @@ int main( int argc, char* argv[] )
   requestsPoller[ 2 ].events = ZMQ_POLLIN;
   requestsPoller[ 3 ].socket = (void*) shellSocket;
   requestsPoller[ 3 ].events = ZMQ_POLLIN;
-
-  while( isRunning ) // Run while we do not receive shutdown request
+  
+  while( isRunning ) // Run while we do not press Ctrl^C or receive shutdown request
   {
-    // Poll sockets. We use it instead 
-    // of blocking read calls to detect interrupts
+    // Poll sockets. We use it instead of blocking read calls to detect interrupts
     zmq::poll( requestsPoller, 2, -1 );
     
     if( requestsPoller[ 0 ].revents == ZMQ_POLLIN )
@@ -192,9 +191,9 @@ int main( int argc, char* argv[] )
       HandleControlMessage( shellSocket );
     }
   }
-
+  
   heartbeatThread.join(); // Wait for the Heartbeat thread to return
-
+  
   exit( 0 );
 }
 
