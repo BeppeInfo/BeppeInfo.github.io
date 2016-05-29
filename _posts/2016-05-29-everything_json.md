@@ -74,7 +74,7 @@ Fairly quickly, I ended up finding the [JsonCpp](https://github.com/open-source-
 
 At long last, let's put it all to use to set up or connections properly and, for now, just handle the kernel shutdown message, sent from the client as a multi-part **JSON** string:
 
-{% highlight json %}
+{% highlight python %}
 [
   b'u-u-i-d',         # zmq identity(ies)
   b'<IDS|MSG>',       # delimiter

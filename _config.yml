@@ -79,8 +79,8 @@ gems: [jekyll-paginate]
 
 # Output options (more information on Jekyll's site)
 # timezone: "America/Vancouver"
-markdown: kramdown
-highlighter: rouge
+markdown: redcarpet #kramdown
+highlighter: pygments #rouge
 permalink: /:year-:month-:day-:title/
 paginate: 5
 
