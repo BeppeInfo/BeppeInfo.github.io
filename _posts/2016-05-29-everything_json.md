@@ -6,7 +6,7 @@ category: Programming
 tags: [GSoC, ZeroMQ, Jupyter, JSON]
 --- 
 
-So, If you read my previous posts, you know that, up till now, we have a **Jupyter** kernel that opens its needed **ZeroMQ** sockets on arbitrary ports and does pretty much nothing besides that.
+So, if you read my previous posts, you know that, up till now, we have a **Jupyter** kernel that opens its needed **ZeroMQ** sockets on arbitrary ports and does pretty much nothing besides that.
 
 If you are a little versed in socket programming, or even just **Internet Protocol** (**IP**) things, you know that this won't work: we can't just start listening (bind) to a port on a server and not tell the client which port it should connect to, or vice versa.
 
@@ -162,10 +162,10 @@ int main( int argc, char* argv[] )
   requestsPoller[ 0 ].events = ZMQ_POLLIN;
   requestsPoller[ 1 ].socket = (void*) controlSocket;
   requestsPoller[ 1 ].events = ZMQ_POLLIN;
-  requestsPoller[ 0 ].socket = (void*) stdinSocket;
-  requestsPoller[ 0 ].events = ZMQ_POLLIN;
-  requestsPoller[ 1 ].socket = (void*) shellSocket;
-  requestsPoller[ 1 ].events = ZMQ_POLLIN;
+  requestsPoller[ 2 ].socket = (void*) stdinSocket;
+  requestsPoller[ 2 ].events = ZMQ_POLLIN;
+  requestsPoller[ 3 ].socket = (void*) shellSocket;
+  requestsPoller[ 3 ].events = ZMQ_POLLIN;
 
   while( isRunning ) // Run while we do not receive shutdown request
   {
@@ -263,7 +263,6 @@ Reading config file /run/user/1000/jupyter/kernel-12496.json
 [JupyterQtConsoleApp] Connecting to: tcp://127.0.0.1:54700
 [JupyterQtConsoleApp] connecting iopub channel to tcp://127.0.0.1:42679
 [JupyterQtConsoleApp] Connecting to: tcp://127.0.0.1:42679
-Received Control message: [
 [JupyterQtConsoleApp] connecting stdin channel to tcp://127.0.0.1:46033
 [JupyterQtConsoleApp] Connecting to: tcp://127.0.0.1:46033
 [JupyterQtConsoleApp] connecting heartbeat channel to tcp://127.0.0.1:39314
@@ -275,6 +274,7 @@ Received Heartbeat message: pingDY
                                   Socket-Type
 Received Heartbeat message: pingDY
                                   Socket-Type
+Received Control message: [
 UUID: 
 Delimiter: <IDS|MSG>cket-Type
 HMAC: 3a49bfc2b6408e7c2b069d91b8fe96319cde7fbee0d52953a369dec10e7a2861u
