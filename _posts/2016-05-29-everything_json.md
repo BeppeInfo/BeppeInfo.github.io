@@ -150,14 +150,12 @@ int main( int argc, char* argv[] )
   zmq::socket_t shellSocket( context, ZMQ_ROUTER );
   shellSocket.bind( connectionTransport + "://" + connectionIPHost + ":" + connectionConfig.get( "shell_port", "0" ).asString() );
 
-  // Run Heartbeat thread. Context is thread-safe,
-  // so we can safely pass it
+  // Run Heartbeat thread. Context is thread-safe, so we can safely pass it
   std::thread heartbeatThread( HeartbeatLoopRun, &context, connectionTransport + "://" + connectionIPHost + ":" + connectionConfig.get( "hb_port", "0" ).asString() );
 
   // Poller for detecting incoming Shell and Control request messages
   zmq::pollitem_t requestsPoller[ 4 ];
-  // Overloaded (void*) cast operator. 
-  // Returns underlying socket_t::ptr member
+  // Overloaded (void*) cast operator. Returns underlying socket_t::ptr member
   requestsPoller[ 0 ].socket = (void*) ioPubSocket;
   requestsPoller[ 0 ].events = ZMQ_POLLIN;
   requestsPoller[ 1 ].socket = (void*) controlSocket;
@@ -215,8 +213,7 @@ void HandleControlMessage( zmq::socket_t& controlSocket )
   std::cout << "HMAC: " << (char*) request.data() << std::endl;
 
   controlSocket.recv( &request );         // Header
-  // I don't know if this is the most efficient way 
-  // to do it, but looks nice anyways...
+  // I don't know if this is the most efficient way to do it, but it looks cool anyways...
   std::stringstream( (char*) request.data() ) >> requestHeader;
   std::cout << "Header: " << requestHeader << std::endl;
 
