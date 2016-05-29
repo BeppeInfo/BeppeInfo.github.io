@@ -16,7 +16,7 @@ Well, not actually. Some research brings me to the thought:
 
 The Web is so full of knowledge resources (and dumb things too)... That includes information provided by people who previously built **Jupyter** kernels, those precursor heroes, like [Doug](https://github.com/dsblank/simple_kernel) and [Andrew](http://andrew.gibiansky.com/blog/ipython/ipython-kernels/), who paved the way for the following developers. Your references are surely apreciated here, gentlemen.
 
-Oh, I can't forget to mention the rich [Jupyter developer documentation](http://jupyter-client.readthedocs.io/en/latest/kernels.html) as well.
+Oh, I can't forget to mention the rich [Jupyter developer documentation](http://jupyter-client.readthedocs.io/en/latest/kernels.html) as well. It contains a ton of info and even pointed me to the previous links.
 
 So, as [Antoine Lavoisier](https://en.wikipedia.org/wiki/Antoine_Lavoisier) would say (in my recently "learned" French):
 
