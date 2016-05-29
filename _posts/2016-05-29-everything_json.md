@@ -294,7 +294,7 @@ Shutting Scilab kernel down
 
 {% endhighlight %}
 
-Apart from some weird formating that I need to check later, now you can see that we are binding to the proper ports, receiving **Heartbeat** messages and, at the end, reading and parsing a **shutdown** message correctly. 
+Apart from some weird formatting issues that I have to check later (thread synchronization, maybe), now you can see that we are binding to the proper ports, receiving **Heartbeat** messages and, at the end, reading and parsing a **shutdown** message correctly. 
 
 I hope you enjoyed today's reading. See ya !!
 
