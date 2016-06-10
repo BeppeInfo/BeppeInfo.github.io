@@ -79,7 +79,7 @@ gems: [jekyll-paginate]
 
 # Output options (more information on Jekyll's site)
 # timezone: "America/Vancouver"
-markdown: redcarpet #kramdown
+markdown: kramdown
 highlighter: pygments #rouge
 permalink: /:year-:month-:day-:title/
 paginate: 5

@@ -64,7 +64,7 @@ Now, guess which format is used for the frontend-backend message passing... Woul
   <img src="http://s2.quickmeme.com/img/c4/c4083d836ddff66aadf770fddf6c865feb6c9c6db293f2ade3da3a0e5f2cf675.jpg">
 </p>
 
-*"It should be hard to read/parse/write all that, right ?"*
+*"It must be hard to read/parse/write all that, right ?"*
 
 Well, I didn't even think about it, as I immediately start looking for an easier solution (laziness can, paradoxically, be a driving force). If even **C** has nice libraries for this task (like [Klib](https://github.com/attractivechaos/klib) or [Json-C](https://github.com/json-c/json-c)), how on earth **C++** wouldn't have it ?
 
