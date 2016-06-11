@@ -164,6 +164,7 @@ private:
   static bool enabled;
 };
 
+// Static variables initialization
 CryptoPP::HMAC<CryptoPP::SHA256> MessageHashGenerator::hashGenerator;
 bool MessageHashGenerator::enabled = false;
 {% endhighlight %}
