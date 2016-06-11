@@ -177,12 +177,12 @@ int main( int argc, char* argv[] )
   while( isRunning ) // Run while we do not press Ctrl^C or receive shutdown request
   {
     // Poll sockets. We use it instead of blocking read calls to detect interrupts
-    zmq::poll( requestsPoller, 2, -1 );
+    zmq::poll( requestsPoller, 4, -1 );
     
     if( requestsPoller[ 0 ].revents == ZMQ_POLLIN )
     {
       // We received a I/O Pub message
-      HandleControlMessage( ioPubSocket );
+      HandleIOPubMessage( ioPubSocket );
     }
     if( requestsPoller[ 1 ].revents == ZMQ_POLLIN )
     {
@@ -192,12 +192,12 @@ int main( int argc, char* argv[] )
     if( requestsPoller[ 2 ].revents == ZMQ_POLLIN )
     {
       // We received a Stdin message
-      HandleControlMessage( stdinSocket );
+      HandleStdinMessage( stdinSocket );
     }
     if( requestsPoller[ 3 ].revents == ZMQ_POLLIN )
     {
       // We received a Shell message
-      HandleControlMessage( shellSocket );
+      HandleShellMessage( shellSocket );
     }
   }
 
