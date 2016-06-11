@@ -43,7 +43,7 @@ By default, **Jupyter** asks for a **keyed-hash message authentication code** ([
 Here, **"key"** is the value used to initialize every hash calculation, and changes each time we run our program (you can force it to be an empty string, to disable authentication alltogether). Besides, that was the major source of my frustration on the past few days, lol. More on that later...
 
 
-One more time, "According to **Jupyter Docs**", the **hmac-sha256** hash calculation is performed this way, on **IPython**:
+Once again "according to **Jupyter Docs**", the **hmac-sha256** hash calculation is performed this way, on **IPython**:
 
 {% highlight python %}
 import hmac
