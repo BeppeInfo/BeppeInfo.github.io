@@ -15,7 +15,7 @@ Well, as software made for a much broader audience, on **Jupyter** systems those
 So, this time I couldn't escape taking safety into account and had to program like the big boys, learning **Jupyter**'s way to do it...
 
 
-**Maaaan, it was a hard way !!** 
+**Maaaan, it was a hard path !!** 
 
 
 Much more than it should have been, I must say, because what **Jupyter** defines for its applications (clients and kernels) to do is quite simple: we need to generate a [**hash**](https://en.wikipedia.org/wiki/Hash_function) based on the data (actually, **Header**, **Parent Header**, **Metadata** and **Content** frames) of the message.
