@@ -1,12 +1,12 @@
 ---
 layout: post
 title: My 2016 GSoC Project - Part VIII
-subtitle: It's Never Too Late
+subtitle: It's Never Too Late to Go Back
 category: Programming
 tags: [GSoC, Jupyter, Scilab, OpenSSL]
 ---  
 
-Ok, I know I'm late again this week, but that is not (completely) due to laziness. I'd wish to say that it has to do with real life issues, but I'm not sure if academic life can be called "real life" (or even "life"). This routine is really taking a toll on me.
+Ok, I know I'm late again this week, but that is not (completely) due to laziness. I'd wish to say that it has to do with **real life issues**, but I'm not sure if academic life can be called **"real life"** (or even **"life"**). This routine is really taking a toll on me.
 
 To make it brief, I just want to let you know that some things stated on my last post are not valid anymore: talking to **Clément David** (if I have not mentioned him yet, he is one of my **GSoC** mentors) at [Scilab GSoC mailing list](http://mailinglists.scilab.org/Scilab-GSOC-Mailing-Lists-Archives-f2646148.html), I got to know that **OpenSSL** is already a dependency of **Scilab**, so to run my **Jupyter Kernel** it'll be needed anyways.
 
