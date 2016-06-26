@@ -1,7 +1,7 @@
 ---
 layout: post
 title: My 2016 GSoC Project - Part VIII
-subtitle: It's Never Too Late to Go Back
+subtitle: It's never too late to go back
 category: Programming
 tags: [GSoC, Jupyter, Scilab, OpenSSL]
 ---  
