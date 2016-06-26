@@ -22,9 +22,9 @@ Basically, I defined **ProtocolMessage** and **ProtocolConnection** classes, dea
 
 I think the best way to explain my idea is showing you at least the classes headers. So there they go.
 
-{% highlight cpp %}
-// protocol_message.hpp (header guards omitted)
+- **protocol_message.hpp** (header guards omitted)
 
+{% highlight cpp %}
 // JsonCpp functions
 #include <json/json.h>  
 #include <json/reader.h>
@@ -46,12 +46,14 @@ class ProtocolMessage
 public:
   // The first argument is used connection's unique identifier.
   // Second and third are always set to "kernel" and "5.0" for now.
-  ProtocolMessage( std::string sessionUUID, std::string userName, std::string versionNumber );
+  ProtocolMessage( std::string sessionUUID, std::string userName, std::string version );
   
   // Returns internal message JSON data in serialized string form
-  void SerializeData( std::string& serialHeader, std::string& serialParent, std::string& serialMetadata, std::string& serialContent );
+  void SerializeData( std::string& serialHeader, std::string& serialParent, 
+                      std::string& serialMetadata, std::string& serialContent );
   // Takes serialized string data and updates its internal JSON objects
-  void DeserializeData( std::string& serialHeader, std::string& serialParent, std::string& serialMetadata, std::string& serialContent );
+  void DeserializeData( std::string& serialHeader, std::string& serialParent, 
+                        std::string& serialMetadata, std::string& serialContent );
   
   // Returns "msg_type" field of message header
   std::string GetType();
@@ -83,6 +85,8 @@ private:
 };
 {% endhighlight %}
 
+- **protocol_connection.hpp** (header guards omitted)
+
 {% highlight cpp %}
 #include "protocol_message.hpp"
 #include "message_hash_generator.hpp"
@@ -104,7 +108,8 @@ public:
   // Constructor takes most of the information from Jupyter kernel config file
   ProtocolConnection( std::string transport, std::string ipHost, 
                       std::string ioPubPort, std::string controlPort, 
-                      std::string shellPort, std::string stdinPort, std::string heartbeatPort );
+                      std::string shellPort, std::string stdinPort, 
+                      std::string heartbeatPort );
   
   ~ProtocolConnection();
   
@@ -145,3 +150,8 @@ private:
                                 std::string& port, bool* ref_isRunning );
 };
 {% endhighlight %}
+
+
+If any of you want, I can detail the implementation better in the comments or later on a post update.
+
+See you next !!
