@@ -18,7 +18,7 @@ Not that I haven't done anything in the past weeks. As I said, I want to get rid
   <img src="http://cdn.meme.am/instances/42651831.jpg">
 </p>
 
-Basically, I defined **ProtocolMessage** and **ProtocolConnection** classes, dealing with **Jupyter** message structure and the needed set of **ZeroMQ** sockets, respectively. My intention was to let the **main** code see only a connection object and a queue of incoming and outgoing message objects, from which it takes or sets only the **JSON** data relevant to the kernel language engine (**Scilab** libraries, in our case).
+Basically, I defined **ProtocolMessage** and **ProtocolServerConnection** classes, dealing with **Jupyter** message structure and the needed set of **ZeroMQ** kernel sockets, respectively. My intention was to let the **main** code see only a connection object and a queue of incoming and outgoing message objects, from which it takes or sets only the **JSON** data relevant to the kernel language engine (**Scilab** libraries, in our case).
 
 I think the best way to explain my idea is showing you at least the classes headers. So there they go.
 
@@ -44,9 +44,9 @@ I think the best way to explain my idea is showing you at least the classes head
 class ProtocolMessage
 {
 public:
-  // The first argument is used connection's unique identifier.
-  // Second and third are always set to "kernel" and "5.0" for now.
-  ProtocolMessage( std::string sessionUUID, std::string userName, std::string version );
+  // The first argument is an application identifier ("kernel" here).
+  // Second one is used as message type and connection's unique identifier or publisher topic.
+  ProtocolMessage( std::string userName = "", std::string messageType = "" );
   
   // Returns internal message JSON data in serialized string form
   void SerializeData( std::string& serialHeader, std::string& serialParent, 
@@ -57,8 +57,12 @@ public:
   
   // Returns "msg_type" field of message header
   std::string GetType();
-  // Defines "msg_type" field and sets the rest of message header accordingly
-  void SetType( std::string messageType );
+  
+  // Sets header and parent properly for reply messages (e.g. request responses)
+  ProtocolMessage GenerateReply( std::string userName, std::string messageType = "" );
+  
+  // Allows connection to set message's session identifier
+  void SetSessionUUID( std::string sessionUUID )
   
   // Use native date functions to generate a ISO format time string for the message
   void UpdateTimeStamp();
@@ -73,15 +77,12 @@ public:
   static const char* DELIMITER;
   
 private:  
-  std::string sessionUUID;
-  std::string userName;
-  std::string versionNumber;
   Json::Value header, parent;
   Json::FastWriter serializer;
   Json::Reader deserializer;
   
-  // Utility function
-  void BuildNewHeader();
+  // Initialized to "5.0". Common to all messages.
+  static const std::string VERSION_NUMBER;
 };
 {% endhighlight %}
 
@@ -95,23 +96,23 @@ private:
 #include <zmq.hpp>      // ZeroMQ functions
 
 #include <thread>       // C++11 threads
-#include <chrono>       // C++11 time handling functions
 
 #include <string>
 #include <queue>
 #include <iostream>
 #include <string>
 
-class ProtocolConnection
+class ProtocolServerConnection
 {
 public:
   // Constructor takes most of the information from Jupyter kernel config file
-  ProtocolConnection( std::string transport, std::string ipHost, 
-                      std::string ioPubPort, std::string controlPort, 
-                      std::string shellPort, std::string stdinPort, 
-                      std::string heartbeatPort );
+  ProtocolServerConnection( std::string transport, std::string ipHost, 
+                            std::string ioPubPort, std::string controlPort, 
+                            std::string shellPort, std::string stdinPort, 
+                            std::string heartbeatPort );
   
-  ~ProtocolConnection();
+  // Destructor
+  ~ProtocolServerConnection();
   
   // Define hash key and algorithm for the HMAC engine
   void SetHashGenerator( std::string keyString, std::string signatureScheme );
@@ -119,8 +120,10 @@ public:
   // Put all available incoming messages in a queue in order
   // of priority (e.g. control socket messages first)
   std::queue<ProtocolMessage>& ReceiveMessages();
-  // Redirects each message to its proper socket according to "msg_type" field
-  void SendMessage( std::queue<ProtocolMessage>& messageOutQueue );
+  // Redirects single message to its proper socket according to "msg_type" field
+  void SendMessage( ProtocolMessage& message );
+  // Calls "SendMessage" for each message in the queue
+  void SendMessages( std::queue<ProtocolMessage>& messageOutQueue );
   
   // Stops heartbeat thread
   void Shutdown();
