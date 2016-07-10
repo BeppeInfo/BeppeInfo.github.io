@@ -31,6 +31,7 @@ The thing is: the way I understand it, that means the **Jupyter** server will be
 
 As I got some progress with the wrong (for this case) approach, and wrapping my head around the new one is taking some time, I decided to write about it anyways. For anyone who is planning to just follow my progress, this post could pretty much be ignored, but I think it could still be an interesting read for someone (I hope).
 
+
 ### Call_scilab and api_scilab
 
 Since version **5.2**, **Scilab** defines the [**call_scilab API**](https://help.scilab.org/docs/6.0.0/en_US/call_scilab.html) for sending string commands (or **jobs**) to its internal engine from **C/C++** applications. That's like the expected behaviour we want when our **Jupyter** kernel receives an **execute_request** message. 
@@ -46,6 +47,7 @@ int SendScilabJobs( char **jobs, int numberjobs );
 {% endhighlight %}
 
 There is also the more complex [**api_scilab API**](https://help.scilab.org/docs/6.0.0/en_US/api_scilab.html), for manipulating its native objects (e.g. matrices) directly, more geared towards developing **C/C++** extension modules for the offcial **Scilab** application, but that could (I guess) also be used in our case, with some limitations, for tasks like code instrospection when handling an **inspect_request**.
+
 
 ### Setting it up
 
@@ -93,7 +95,7 @@ You can see that, on non **Windows** systems (namely **Unix** ones), the created
 
 For our **Jupyter** kernel, I'm using a **bash script** to set this value before calling the actual executable:
 
-- ScilabKernelLauncher.sh
+- **ScilabKernelLauncher.sh**
 
 {% highlight bash %}
 #!/bin/bash
@@ -112,7 +114,7 @@ ${KERNEL_DIR}/ScilabKernel $@
 
 As we are now calling the compiled kernel through a script, the kernel spec file should be changed accordingly:
 
-- kernel.json
+- **kernel.json**
 
 {% highlight python %}
 {
@@ -121,6 +123,7 @@ As we are now calling the compiled kernel through a script, the kernel spec file
  "language": "scilab"
 } 
 {% endhighlight %}
+
 
 ### Output redirection
 
