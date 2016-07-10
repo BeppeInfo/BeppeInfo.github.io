@@ -14,6 +14,8 @@ On that same post, I also mentioned that I have a really crucial task for this s
 
 <p align="center">
   <img src="https://cdn.meme.am/instances/500x/69257736.jpg">
+</p>
+<p align="center">
   (Poser alert: I've never actually watched the series)
 </p>
 
@@ -130,6 +132,8 @@ After some battling with [**pipe related system calls**](https://en.wikipedia.or
 
 <p align="center">
   <img src="/img/qtconsole.png">
+</p>
+<p align="center">
   (As you can see, it only works when I ask to display de value explicitly)
 </p>
 
