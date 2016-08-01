@@ -204,7 +204,7 @@ $ autoreconf
 
 Now we can run our new and shiny **configure** script and then call **make**, in the hopes that we didn't break anything...
 
-*It kinda worked here. The build was completed (Yay!) but I had some execution issues that I need to investigate.*
+*It kinda worked here. I had some execution issues that I need to investigate, but building went until the end (Yay!).*
 
 
 To be fair, I'm probably still behind schedule, since last month kept requiring more academic effort then expected (*I can't get some vacation, for goodness sake !*). But assimilating the necessary tools to successfully integrate my project to **Scilab**'s' main tree was definitely an important milestone in delivering a functional product.
