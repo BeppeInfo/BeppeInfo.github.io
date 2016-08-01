@@ -49,8 +49,11 @@ Actually, there is more to it.
 **Autotools** is a set of 3 different applications, used in sequence before and during the building operations. In each step, simpler input configuration files is used to generate more complex and specific ones.
 
 According to [**Scilab's Wiki**](https://wiki.scilab.org/Full%20Description%20of%20the%20compilation%20of%20Scilab):
+
 - **automake** takes all **Makefile.am** handwritten files listed in **configure.ac** and generates corresponding **Makefile.in** files.
+
 - **autoconf** takes **configure.ac** to generate the **configure** script, used to produce a **Makefile** for each **Makefile.in**.
+
 - **libtool** is used during compilation (running **make**) to build the internal project libraries, if any.
 
 Learning how those work, at least superficially, was essential for adding my **jupyter** module to the whole **Scilab**'s build.
