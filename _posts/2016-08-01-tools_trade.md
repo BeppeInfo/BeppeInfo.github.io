@@ -198,7 +198,7 @@ $ autoreconf
 {% endhighlight %}
 
 <p align="center">
-  <img src="https://imgflip.com/i/189trv">
+  <img src="https://i.imgflip.com/189r68.jpg">
 </p>
 
 
