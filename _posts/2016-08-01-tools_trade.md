@@ -8,11 +8,11 @@ tags: [GSoC, Scilab, C++, Autotools]
 
 Hello, again (and quicker than last time) !
 
-When it comes to solving a problem, much is said about the value of knowing precisely which screws to twist, rather than being capable of twisting a lot of screws. But what we normally neglect is that first you need to know how to use a **screwdriver** ! 
+When it comes to solving a problem, much is said about the value of knowing precisely which screws to twist, rather than being capable of twisting a lot of screws. But what we normally neglect is that first you need to know how to use a **screwdriver** !
 
 Well, it seems like that is a good analogy for software development of a certain magnitude.
 
-**Scilab** surely is a complex project, and even the tools used to automate much of its code development, maintenance and compilation also end up being of a little complex usage. 
+**Scilab** surely is a complex project, and even the tools used to automate much of its code development, maintenance and compilation also end up being of a little complex usage.
 
 At least at first sight.
 
@@ -30,11 +30,11 @@ $ sudo make install
 
 The **make** command always look for a file named **Makefile**, located in the current shell folder. Makefiles are something used on many platforms (like **Linux**, **Windows** and **MacOS**) to automate the process of calling the right platform compiler (**gcc**, **clang**, **msvc**, etc.) and linker, setting the compiler/linker flags and listing all the sources and libraries involved on the build of your project. Without it, you would have to define all that stuff by hand every time.
 
-The problem is that writing a **Makefile** could become laborious and error prone, as your project gets to big or subject to some variability (**"What if I could have implementations X and Y of the same library interface"**). 
+The problem is that writing a **Makefile** could become laborious and error prone, as your project gets to big or subject to some variability (**"What if I could have implementations X and Y of the same library interface"**).
 
-That's when tools to automatically generate those build files come to rescue, being almost mandatory if one wishes to keep its sanity.
+That's when tools to automatically generate those build files (**"makemakes"**) come to rescue, being almost mandatory if one wishes to keep its sanity.
 
-Maybe you already heard about projects like **CMake**, **SCons**, **qmake** or whatever, which are cross-platform and somehow modern programs intended for that purpose. But before them, on **Linux**, there was **autotools**.
+Maybe you already heard about projects like [**CMake**](https://cmake.org/), [**SCons**](http://scons.org/), [**qmake**](https://en.wikipedia.org/wiki/Qmake) or whatever, which are cross-platform and somehow modern programs intended for that purpose. But before them, on **Linux**, there was [**autotools**](https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html).
 
 The **configure** script we run before the actual building (**make**) process is the **autotools** **Makefile** generator. Which is in turn generated from the **configure.ac** definition file.
 
@@ -48,11 +48,12 @@ Actually, there is more to it.
 
 **Autotools** is a set of 3 different applications, used in sequence before and during the building operations. In each step, simpler input configuration files is used to generate more complex and specific ones.
 
+According to [**Scilab's Wiki**](https://wiki.scilab.org/Full%20Description%20of%20the%20compilation%20of%20Scilab):
 - **automake** takes all **Makefile.am** handwritten files listed in **configure.ac** and generates corresponding **Makefile.in** files.
 - **autoconf** takes **configure.ac** to generate the **configure** script, used to produce a **Makefile** for each **Makefile.in**.
 - **libtool** is used during compilation (running **make**) to build the internal project libraries, if any.
 
-Learning how those work, at least superficially, was essential for adding my **jupyter** module to the whole **Scilab**'s build. 
+Learning how those work, at least superficially, was essential for adding my **jupyter** module to the whole **Scilab**'s build.
 
 Firstly, each module folder contains its own **Makefile.am**, for creating the module's internal libray. I copied as little as needed (or slightly more than that) from other existing modules to write mine:
 
@@ -102,7 +103,7 @@ include $(top_srcdir)/Makefile.incl.am
 {% endhighlight %}
 
 
-Then, we include the new file in the **configure.ac** list. As the **jupyter** module addition would require extra dependencies (**ZeroMQ** and native **UUID** library), it's possible to allow its disablement by creating a new configuration option, and check for their existance in the running operating system.
+Then, we include the new file in the **configure.ac** list. As the **jupyter** module addition would require extra dependencies (**ZeroMQ** and native **UUID** library), it's possible to allow its disablement by creating a new [**configuration option**](https://wiki.scilab.org/Description%20of%20configure%20options), and check for their existance in the running operating system.
 
 - **SCI/configure.ac**
 {% highlight bash %}
@@ -120,11 +121,11 @@ AC_CONFIG_FILES([ ... modules/jupyter/Makefile ... ])
 ## Check for dependencies of Jupyter kernel functionality
 
 if test "$enable_jupyter" = yes; then
-    AC_CHECK_LIB([zmq], [zmq_ctx_new], [JUPYTER_LIBS=" -lzmq"], 
+    AC_CHECK_LIB([zmq], [zmq_ctx_new], [JUPYTER_LIBS=" -lzmq"],
                   [AC_MSG_ERROR([ZeroMQ not found. Use --disable-jupyter or install ZeroMQ library])])
-    AC_CHECK_LIB([uuid], [uuid_is_null], [JUPYTER_LIBS+=" -luuid"], 
+    AC_CHECK_LIB([uuid], [uuid_is_null], [JUPYTER_LIBS+=" -luuid"],
                   [AC_MSG_ERROR([uuid not found. Use --disable-jupyter or set the path to uuid library])])
-    
+
     AC_SUBST(JUPYTER_LIBS)
 fi
 
@@ -158,7 +159,7 @@ Finally, we add a new executable target to the base **Makefile.am**, from now, b
 bin_PROGRAMS		= scilab-bin scilab-cli-bin
 
 bin_SCRIPTS			= bin/scilab bin/scilab-adv-cli bin/scilab-cli \
-bin/scinotes bin/xcos 
+bin/scinotes bin/xcos
 
 if IS_MACOSX
 bin_SCRIPTS 		+= bin/checkmacosx.applescript
@@ -181,3 +182,33 @@ endif
 [...]
 {% endhighlight %}
 
+
+With all that done, we can recreate the automatically generated files by calling, in sequence, from the base (**SCI**) folder:
+
+{% highlight bash %}
+$ aclocal
+$ autoconf
+$ automake
+{% endhighlight %}
+
+Or simply, automating things a little more:
+
+{% highlight bash %}
+$ autoreconf
+{% endhighlight %}
+
+<p align="center">
+  <img src="https://imgflip.com/i/189r68">
+</p>
+
+
+Now we can run our new and shiny **configure** script and then call **make**, in the hopes that we didn't break anything...
+
+*It kinda worked here. The build was completed (Yay!) but I had some execution issues that I need to investigate.*
+
+
+To be fair, I'm probably still behind schedule, since last month kept requiring more academic effort then expected (*I can't get some vacation, for goodness sake !*). But assimilating the necessary tools to successfully integrate my project to **Scilab**'s' main tree was definitely an important milestone in delivering a functional product.
+
+I believe I can move faster without this obstacle, and we still have 15 days to the start of the deadline. So let's move on...
+
+See you next time !!
