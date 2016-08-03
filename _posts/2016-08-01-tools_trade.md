@@ -210,7 +210,7 @@ Now we can run our new and shiny **configure** script and then call **make**, in
 *It kinda worked here. I had some execution issues that I need to investigate, but building went until the end (Yay!).*
 
 
-To be fair, I'm probably still behind schedule, since last month kept requiring more academic effort then expected (*I can't get some vacation, for goodness sake !*). But assimilating the necessary tools to successfully integrate my project to **Scilab**'s' main tree was definitely an important milestone in delivering a functional product.
+To be fair, I'm probably still behind schedule, since last month kept requiring more academic effort then expected (*I can't get proper vacations, for goodness sake !*). But assimilating the necessary tools to successfully integrate my project to **Scilab**'s' main tree was definitely an important milestone in delivering a functional product.
 
 I believe I can move faster without this obstacle, and we still have 15 days to the start of the deadline. So let's move on...
 
