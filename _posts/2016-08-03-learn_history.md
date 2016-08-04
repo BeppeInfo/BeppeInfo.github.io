@@ -74,7 +74,7 @@ So, at the **JupyterKernel** class, now we have an almost complete history handl
 
 - From **JupyterKernel.cpp**
 {% highlight cpp %}
-#include "HistoryManager.h"
+#include "HistoryManager.h" // Wrapper C functions for HistoryManager class methods
 
 // Other includes
 
