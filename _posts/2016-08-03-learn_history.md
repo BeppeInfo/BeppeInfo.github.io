@@ -20,7 +20,7 @@ For that reason (I'm just guessing wildly), **Jupyter protocol** defines **histo
 From the good old [**Jupyter documentation**](http://jupyter-client.readthedocs.io/en/latest/messaging.html#history):
 
 - **history_request** structure
-{% highlight json %}
+{% highlight python %}
 content = {
 
   # If True, also return output history in the resulting dict.
@@ -55,7 +55,7 @@ content = {
 {% endhighlight %}
 
 - **history_reply** structure
-{% highlight json %}
+{% highlight python %}
 content = {
   # A list of 3 tuples, either:
   # (session, line_number, input) or
