@@ -78,7 +78,8 @@ So, at the **JupyterKernel** class, now we have an almost complete history handl
 
 // Other includes
 
-void JupyterKernel::HandleExecutionRequest( JupyterKernelConnection& publisher, JupyterMessage& commandMessage, Json::Value& replyContent )
+void JupyterKernel::HandleExecutionRequest( JupyterKernelConnection& publisher, 
+                                            JupyterMessage& commandMessage, Json::Value& replyContent )
 {
   // [...]
 
