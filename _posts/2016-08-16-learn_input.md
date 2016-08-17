@@ -315,4 +315,4 @@ With all set up, the bug of a new **Jupyter** prompt appearing appearing before 
   <img src="/img/qtconsole_input.png">
 </p>
 
-For now, I feel more or less satisfied...
+For now, I feel more or less satisfied... *Ciao*
