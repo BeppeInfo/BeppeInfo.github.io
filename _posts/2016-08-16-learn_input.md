@@ -36,7 +36,8 @@ On the bright side, this breakage would be needed anyways, for allowing the kern
 
 - Our **HandleExecutionRequest** method, from **JupyterKernel** class
 {% highlight cpp %}
-void JupyterKernel::HandleExecutionRequest( JupyterKernelConnection& publisher, JupyterMessage& commandMessage )
+void JupyterKernel::HandleExecutionRequest( JupyterKernelConnection& publisher, 
+                                            JupyterMessage& commandMessage )
 {
   static unsigned int executionCount;
   
@@ -106,13 +107,13 @@ When the interfaces for requesting or setting values doesn't seem that obvious, 
 - From **input.sci**
 {% highlight octave %}
 function [x] = input(msg, flag)
-// ...
+// [...]
 
         prompt("");
         mprintf(msg);
         x = mscanf(fmt);
         
-// ...
+// [...]
 {% endhighlight %}
 
 You don't need to be that used to **Scilab** language to think this is the relevant part for us. The name **mscanf** reminds of **C**'s **scanf** function for getting console input, so we should be on the right track. The **mscanf** is another **Scilab** function, implemented in **C++**:
@@ -120,7 +121,7 @@ You don't need to be that used to **Scilab** language to think this is the relev
 - From **sci_mscanf.cpp**
 {% highlight cpp %}
 function [x] = input(msg, flag)
-/* ... */
+/* [...] */
         // get data
         // The console thread must not parse the next console input.
         ConfigVariable::setScilabCommand(0);
@@ -137,7 +138,7 @@ function [x] = input(msg, flag)
         // reset flag to default value
         ConfigVariable::setScilabCommand(1);
         
-/* ... */
+/* [...] */
 {% endhighlight %}
 
 Bingo ! As **setScilabCommand** method is not used anywhere else, we can assume that anytime the internal variable is set to **0**, which can be acessed through the correspondent **isScilabCommand** method, the console is waiting for user input.
@@ -148,13 +149,13 @@ Now, the first problem, of verifying command execution completion (or console re
 
 - From **sci_execstr.cpp**
 {% highlight cpp %}
-/* ... */
+/* [...] */
 
     //save current prompt mode
     int iPromptMode = ConfigVariable::getPromptMode();
     ConfigVariable::setPromptMode(-1);
 
-    /* ... */
+    /* [...] */
 
     ast::SeqExp* pSeqExp = pExp->getAs<ast::SeqExp>();
     std::unique_ptr<ast::ConstVisitor> run(ConfigVariable::getDefaultVisitor());
@@ -167,28 +168,29 @@ Now, the first problem, of verifying command execution completion (or console re
         {
             pSeqExp->accept(*run);
         }
-        /* ... */
+        /* [...] */
     }
     catch (const ast::InternalError& ie)
     {
-        /* ... */
+        /* [...] */
     }
 
-    /* ... */
+    /* [...] */
 
     ConfigVariable::macroFirstLine_end();
     ConfigVariable::setPromptMode(iPromptMode);
     
-/* ... */
+/* [...] */
 {% endhighlight %}
 
 Something that I also noticed on other functions that handle code execution, but which I was neglecting so far, is the manipulation of the **prompt** mode. Some brief inspection of the **ConfigVariable** class header file showed that the value **-1** represents the **silent** mode, defined before execution, while **2** indicates the avaibility for new commands (**prompt** mode).
 
 I don't think that considering only these two modes is enough, but they cover most of the cases, and allowed me to ditch **ThreadManagement** signals and waits to have a somehow working execution management:
 
-- Our **HandleExecutionRequest** method (runs in a detached thread), from **JupyterKernel** class
+- Our **HandleExecutionReply** method (runs in a detached thread), from **JupyterKernel** class
 {% highlight cpp %}
-void JupyterKernel::HandleExecutionReply( JupyterKernelConnection& publisher, JupyterMessage commandMessage )
+void JupyterKernel::HandleExecutionReply( JupyterKernelConnection& publisher, 
+                                          JupyterMessage commandMessage )
 {
   static unsigned int executionCount;
   
@@ -222,29 +224,12 @@ void JupyterKernel::HandleExecutionReply( JupyterKernelConnection& publisher, Ju
     publisher.SendMessage( resultMessage );
   }
   
-  // Basic reply and error management
+  
   JupyterMessage replyMessage = commandMessage.GenerateReply( USER_NAME );
-  if( ConfigVariable::isError() )
-  {
-    replyMessage.content[ "status" ] = "error";
-    std::wstring& errorString = ConfigVariable::getLastErrorMessage();
-    replyMessage.content[ "ename" ] = std::string( errorString.begin(), errorString.end() );
-    replyMessage.content[ "evalue" ] = std::to_string( ConfigVariable::getLastErrorNumber() );
-    std::wstring traceString = ConfigVariable::getLastErrorFunction() + L":" + std::to_wstring( ConfigVariable::getLastErrorLine() );
-    replyMessage.content[ "traceback" ] = std::string( traceString.begin(), traceString.end() );
-  }
-  else
-  {
-    Json::Value userExpressions = commandContent.get( "user_expressions", Json::Value( Json::objectValue ) );
-    for( size_t exprIndex = 0; exprIndex < userExpressions.size(); exprIndex++ )
-      std::cout << userExpressions.get( exprIndex, "<null>" ).asString();
-    std::cout << std::endl;
-    
-    replyMessage.content[ "status" ] = "ok";
-    replyMessage.content[ "execution_count" ] = executionCount;
-    replyMessage.content[ "payload" ] = Json::Value( Json::arrayValue );
-    replyMessage.content[ "user_expressions" ] = userExpressions;
-  }
+  
+  // Basic reply and error management
+  /* [...] */
+  
   publisher.SendMessage( replyMessage );
   
   if( storeHistory ) 
@@ -264,7 +249,7 @@ void JupyterKernel::HandleExecutionReply( JupyterKernelConnection& publisher, Ju
 
 - Our **HandleInputRequest** method, from **JupyterKernel** class
 {% highlight cpp %}
-void JupyterKernel::HandleInputRequest( JupyterKernelConnection& requester, std::string shellIdentity )
+void JupyterKernel::HandleInputRequest(JupyterKernelConnection& requester, std::string shellIdentity)
 {
   // Prevents it from being called multiple times for the same mscanf
   if( isWaitingInput ) return;
@@ -281,7 +266,8 @@ void JupyterKernel::HandleInputRequest( JupyterKernelConnection& requester, std:
   std::string promptString = GetCurrentOutput();
     
   JupyterMessage inputRequestMessage( USER_NAME, "input_request" );
-    
+  
+  // Input requests have to use the same identity as the client shell
   inputRequestMessage.identifier = shellIdentity;
     
   inputRequestMessage.content[ "prompt" ] = promptString;
@@ -291,7 +277,7 @@ void JupyterKernel::HandleInputRequest( JupyterKernelConnection& requester, std:
 }
 {% endhighlight %}
 
-- Our **HandleInputRequest** method, from **JupyterKernel** class
+- Our **HandleInputReply** method, from **JupyterKernel** class
 {% highlight cpp %}
 void JupyterKernel::HandleInputReply( Json::Value& replyContent )
 {
