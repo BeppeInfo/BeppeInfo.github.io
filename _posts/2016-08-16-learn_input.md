@@ -50,7 +50,7 @@ void JupyterKernel::HandleExecutionRequest( JupyterKernelConnection& publisher,
   bool storeHistory = commandContent.get( "store_history", not silent ).asBool();
   std::string commandString = commandContent.get( "code", "" ).asString();
   
-  // Some clients doesn't allow input requests and can inform it
+  // Some clients don't allow input requests and can inform it
   isInputAllowed = commandContent.get( "allow_stdin", true ).asBool();
   
   if( not silent ) // Results are not published if client requests silent execution
