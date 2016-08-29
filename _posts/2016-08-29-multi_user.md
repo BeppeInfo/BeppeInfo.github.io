@@ -58,7 +58,8 @@ As our **JupyterKernel::HandleCompletenessRequest** method currently creates onl
 A quick (and, I hope, clever enough) solution for it is replacing the single parser for a static [**map**](http://www.cplusplus.com/reference/map/map/) (also know as [**hash table**](https://en.wikipedia.org/wiki/Hash_table)) data structure, for indexing different code parsers by the unique string identifier of each client, which is provided for every message:
 
 {% highlight cpp %}
-void JupyterKernel::HandleCompletenessRequest( JupyterMessage& commandMessage, Json::Value& replyContent )
+void JupyterKernel::HandleCompletenessRequest( JupyterMessage& commandMessage, 
+                                               Json::Value& replyContent )
 {
   // Independent parser (not the engine's one) hash table
   // Declared "static" so that previous state is kept
