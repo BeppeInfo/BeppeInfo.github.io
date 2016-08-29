@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Post GSoC 2016 - Part I
-subtitle: Handling Multiple Users (Almost...)
+subtitle: "Handling Multiple Users (Almost...)"
 category: Programming
 tags: [GSoC, Scilab, C++, Jupyter]
 ---     
