@@ -15,14 +15,21 @@ As said on [my previous blog post]({% post_url 2017-05-12-google_summer_of_code_
 Imagine that you need to simulate a physical phenomenon, or implement any sort of equation, in your preferred C-like computer language (e.g. **C++** or **Python**)... Simply describing it as
 
 <p align="center">
-  <h3>a = b * c + d</h3>
+  <b>a = b * c + d</b>
 </p>
 
 only allows you to obtain **a**, given all the other values, right ? In this format, you couldn't calculate **c**, for instance, just by having **a**, **b** and **d**. If you need to obtain different variables at different processing steps, the equation must be arranged in all correspondent ways:
 
-<p align="center">
-  <b>b = (a - d) / c        c = (a - d) / b        d = a - b * c</b>
-</p>
+| b = (a - d) / c | c = (a - d) / b | d = a - b * c |
+|:---------------:|:---------------:|:-------------:|
+
+<table style="width:80%">
+  <tr>
+    <th>b = (a - d) / c</th>
+    <th>c = (a - d) / b</th> 
+    <th>d = a - b * c</th>
+  </tr>
+</table>
 
 That's called **causal modeling**: one have to describe every needed different relation between these terms.
 
