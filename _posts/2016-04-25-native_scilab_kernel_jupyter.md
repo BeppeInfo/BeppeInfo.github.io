@@ -10,13 +10,13 @@ tags: [GSoC, Scilab, Jupyter]
 
 Anyways, let's move on.)
 
-As said on the previous blog post, this time I'm going to talk more specifically about my GSoC project, which is named "A Native Scilab Kernel for Jupyter".
+As said on [the previous blog post]({% post_url 2016-04-24-google_summer_of_code %}), this time I'm going to talk more specifically about my GSoC project, which is named **"A Native Scilab Kernel for Jupyter"**.
 
-"So, what is it ?"
+*"So, what is it ?"*
 
 Well, from my point of view, is a good opportunity to change the views of some of my colleagues.
 
-"What ?"
+*"What ?"*
 
 <p align="center">
   <img src="/img/kevin-hart-let-me-explain.jpg">
@@ -26,7 +26,7 @@ At the Mechatronics Engineering course, a mathematical tool for simulation is mo
 
 Not that there is something wrong with Matlab itself (besides being a huge 10+ GB resource hungry blob, I guess). It has great toolboxes, integration with many other applications, professional grade documentation and learning material, and other things that you would expect from a commercial solution but that I don't know because I simply do not use it.
 
-"Why ? Are you some sort of hipster ?"
+*"Why ? Are you some sort of hipster ?"*
 
 A software hipster, maybe.
 
@@ -44,7 +44,7 @@ Beyond that, Matlab is an expensive software. That's OK if you can and are willi
 
 Not that I think people should code everything in pure ANSI C89 (well, maybe I do), but why not use Python (+Numpy +Matplotlib) ? Why not Octave ? Why not... Scilab ? These tools have more than enough resources to handle 99% of graduation (or even graduate) students use cases. But we keep ourselves into the vicious cycle of cultivating bad practices.
 
-"So, what could we do ?", you ask me (didn't you ?)
+*"So, what could we do ?"*, you ask me (didn't you ?)
 
 Cost can't be our selling point for new solutions, because people ignore cost. "Openness" ? Hmmm... I'm not sure this helps.
 
@@ -58,15 +58,15 @@ But, y'know, there is this nice thing called [Jupyter](http://jupyter.org/)
 
 ![Jupyter_logo](http://jupyter.org/assets/main-logo.svg)
 
-"Oh, man ! Look at th.... wait, what is it ?"
+*"Oh, man ! Look at th.... wait, what is it ?"*
 
 Basically (AFAIK), a way to use different interpreted programming languages (mainly mathematical, data science and scientific computing ones) from the same Shell/GUI, calling functions, visualizing data in text or graphical format, playing with interactive interfaces... everything that your language of choice offers.
 
-"Well, couldn't I do this in a terminal with multiple tabs already ?"
+*"Well, couldn't I do this in a terminal with multiple tabs already ?"*
 
 I guess so... But can you do it remotely ?
 
-"OMG ! (wait... ssh ?)"
+*"OMG ! (wait... ssh ?)"*
 
 At its core, Jupyter defines the messaging that needs to happen between the frontend (the web, desktop or mobile based interface you choose) and the backends (kernels where the processing of commands itself happen) for all the different language implementations. The communication should use that nice library called [ZeroMQ](http://zeromq.org/) that supports many types of IPC protocols, including TCP sockets, which allows frontend and backends to run on the same or distinct machines.
 
