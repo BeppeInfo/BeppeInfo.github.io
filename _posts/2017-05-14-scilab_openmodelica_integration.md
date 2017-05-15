@@ -20,14 +20,12 @@ Imagine that you need to simulate a physical phenomenon, or implement any sort o
 
 only allows you to obtain **a**, given all the other values, right ? In this format, you couldn't calculate **c**, for instance, just by having **a**, **b** and **d**. If you need to obtain different variables at different processing steps, the equation must be arranged in all correspondent ways:
 
-| b = (a - d) / c | c = (a - d) / b | d = a - b * c |
-|:---------------:|:---------------:|:-------------:|
-
-<table style="width:80%">
+<table style="width:100%">
   <tr>
-    <th>b = (a - d) / c</th>
-    <th>c = (a - d) / b</th> 
-    <th>d = a - b * c</th>
+    <th>1) a = b * c + d</th>
+    <th>2) b = (a - d) / c</th>
+    <th>3) c = (a - d) / b</th> 
+    <th>4) d = a - b * c</th>
   </tr>
 </table>
 
