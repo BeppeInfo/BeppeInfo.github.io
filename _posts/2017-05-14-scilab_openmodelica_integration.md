@@ -15,13 +15,13 @@ As said on [my previous blog post]({% post_url 2017-05-12-google_summer_of_code_
 Imagine that you need to simulate a physical phenomenon, or implement any sort of equation, in your preferred C-like computer language (e.g. **C++** or **Python**)... Simply describing it as
 
 <p align="center">
-  <b>a = b * c + d</b>
+  <h3>a = b * c + d</h3>
 </p>
 
 only allows you to obtain **a**, given all the other values, right ? In this format, you couldn't calculate **c**, for instance, just by having **a**, **b** and **d**. If you need to obtain different variables at different processing steps, the equation must be arranged in all correspondent ways:
 
 <p align="center">
-  <b>b = (a - d) / c, c = (a - d) / b, and d = a - b * c</b>
+  <b>b = (a - d) / c        c = (a - d) / b        d = a - b * c</b>
 </p>
 
 That's called **causal modeling**: one have to describe every needed different relation between these terms.
@@ -44,7 +44,7 @@ Anyways, **Modelica** is an object-oriented and declarative language specificati
   <img src="/img/modelica_dc_motor.jpg">
 </p>
 <p align="center">
-  (**Modelica** text and graphical (blocks) representations of an electromechanical system)
+  (<b>Modelica</b> text and graphical (blocks) representations of an electromechanical system)
 </p>
 
 Currently, there are a lot of actual simulation tools (commercial and free) which implement the **Modelica** text and graphical languages, like **CATIA Systems**, **Dymola**, **LMS AMESim**, **JModelica**, **MapleSim**, **OpenModelica**, **SimulationX**, **Wolfram** and, guess what, **Scilab**.
@@ -57,7 +57,7 @@ I have even used that in one of my academical works:
   <img src="/img/teleop_simulator.png">
 </p>
 <p align="center">
-  (Can you notice the green blocks ? They are **Modelica** blocks integrated into a **Xcos** model)
+  (Can you notice the green blocks ? They are <b>Modelica</b> blocks integrated into a <b>Xcos</b> model)
 </p>
 
 Nowadays, **Modelica** in **Scilab** is managed by an old **LMS** compiler, released under the **GPL** license, which is not actively maintained (needing out-of tree patches) and support only a subset of the current language specification. To address that, **Scilab** developers proposed modifications to allow the usage of [**OpenModelica**](https://www.openmodelica.org/)’s **OMCompiler** (**omc**) as an alternative. As a more up-to-date solution, **omc** integration would provide **Scilab**/**Xcos** the ability to use more advanced **Modelica** features, and avoid bugs, issues and maintenance burden of the current **modelicac** compiler.
