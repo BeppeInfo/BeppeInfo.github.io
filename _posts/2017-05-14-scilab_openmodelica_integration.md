@@ -15,13 +15,13 @@ As said on [my previous blog post]({% post_url 2017-05-12-google_summer_of_code_
 Imagine that you need to simulate a physical phenomenon, or implement any sort of equation, in your preferred C-like computer language (e.g. **C++** or **Python**)... Simply describing it as
 
 <p align="center">
-  **a = b /* c + d**
+  <b>a = b * c + d</b>
 </p>
 
 only allows you to obtain **a**, given all the other values, right ? In this format, you couldn't calculate **c**, for instance, just by having **a**, **b** and **d**. If you need to obtain different variables at different processing steps, the equation must be arranged in all correspondent ways:
 
 <p align="center">
-  **b = (a - d) // c**, **c = (a - d) // b**, and **d = a - b /* c**
+  <b>b = (a - d) / c, c = (a - d) / b, and d = a - b * c</b>
 </p>
 
 That's called **causal modeling**: one have to describe every needed different relation between these terms.
@@ -41,7 +41,7 @@ Not really a tool, but a standard. Have I ever said I love standards ?
 Anyways, **Modelica** is an object-oriented and declarative language specification for description/modeling of dynamic systems (mechanical, electrical, thermal, mixed, etc.). Being domain neutral, different compiler and simulation engine implementations use the information written in a **Modelica** file (**.mo**) to generate source code for multiple programming languages (**C**, **C++**, **C#**, **Java**, etc.), used for actual processing.
 
 <p align="center">
-  <img src="/img/modelica_dc_motor.png">
+  <img src="/img/modelica_dc_motor.jpg">
 </p>
 <p align="center">
   (**Modelica** text and graphical (blocks) representations of an electromechanical system)
