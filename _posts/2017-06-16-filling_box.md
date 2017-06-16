@@ -10,7 +10,7 @@ Hello there,
 
 I was undecided about where to begin the posts about glueing **FMI2** calls to the **Scicos Block** interface, mentioned in [the last post]({% post_url 2017-06-10-blocky_package %}), so I'll take the most obvious route and start from the beginning... 
 
-... of a block processing, I mean. And that is triggered by the **Initialization flag** (4):
+... of block processing/simulation, I mean. And that is triggered by the **Initialization flag** (4):
 
 <table style="width:100%">
   <tr> <th>flags</th> <th>                inputs                </th> <th>  outputs   </th> <th>               description                     </th> </tr>
