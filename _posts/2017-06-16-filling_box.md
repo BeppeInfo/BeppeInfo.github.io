@@ -21,7 +21,7 @@ I was undecided about where to begin the posts about glueing **FMI2** calls to t
 
 The purpose of the **Initialization job** is more thoroughly described in [the available documentation](http://www.scicos.org/Newblock.pdf):
 
-*"Initialization: At the begining of the simulation, this job is called under flag=4 to initialize continuous and discrete states (if necessary). It also initialize the output port of the block. This function is not used in all of the blocks, it is used for blocks that needed dynamically allocated memory (the allocation is done under this flag), for blocks that read and write data from files, for opening a file, or by the scope to initialize the graphics window."*
+- *"Initialization: At the begining of the simulation, this job is called under flag=4 to initialize continuous and discrete states (if necessary). It also initialize the output port of the block. This function is not used in all of the blocks, it is used for blocks that needed dynamically allocated memory (the allocation is done under this flag), for blocks that read and write data from files, for opening a file, or by the scope to initialize the graphics window."*
 
 So, aside from **continuos/discrete state and output initialization** (in arrays **x**, **z** and **outptr**, respectively), this flag also indicates the moment when all **manual memory allocations** (if needed) should be performed for a given block.
 
@@ -83,9 +83,7 @@ void printLogMessage( fmi2ComponentEnvironment componentEnvironment, fmi2String 
 // The computational function itself
 void fmi2_block( scicos_block* block, const int flag )
 {
-  static fmi2Component fmi2Block;
-
-  fmi2EventInfo eventInfo;
+  static fmi2EventInfo eventInfo;
 
   switch( flag )
   {
@@ -132,16 +130,15 @@ void fmi2_block( scicos_block* block, const int flag )
       
       fmi2EnterContinuousTimeMode( (fmi2Component) block->work );
       
-      // Retrieve initial state x
-      fmi2GetContinuousStates( (fmi2Component) block->work, block->x, block->nx );
-      
-      // Retrieve solution at t=Tstart, for example for outputs
+      // Considering output only floating point continuous values
       double** y = (double**) block->outptr;
-      double outputs[ block->nout ];
-      const fmi2ValueReference* outputIndexes = // Have to figure out how to obtain that
-      fmi2GetReal( (fmi2Component) block->work, outputIndexes, outputs, block->nout );
-      for( int i = 0; i < block->nout; i++ )
-        y[ i ][ 0 ] = outputs[ i ];
+      // Retrieve initial state x
+      if( fmi2GetContinuousStates( (fmi2Component) block->work, block->x, block->nx ) == fmi2Ok )
+      {
+        // Setting outputs the same as continuous states
+        for( int outputIndex = 0; outputIndex < block->nout; outputIndex++ )
+          y[ outputIndex ][ 0 ] = block->x[ outputIndex ];
+      }
 
       // For now, we assume no discrete states
         
@@ -171,9 +168,9 @@ As we are describing initialization procedures for **FMI2**-based blocks, it mak
 
 From the **documentation**:
 
-*"Ending: This job is called when flag=5 at the end. This case is used to close files opened by the block at the begining or during the simulation, to free the allocated memory, etc."*
+- *"Ending: This job is called when flag=5 at the end. This case is used to close files opened by the block at the begining or during the simulation, to free the allocated memory, etc."*
 
-*"Reinitialization: This job is called under flag=6. In this case, the values of the inputs are available and the function create a fixed point iteration for the outputs of the block. On this occasion, the function can also reinitialize its initial states."*
+- *"Reinitialization: This job is called under flag=6. In this case, the values of the inputs are available and the function create a fixed point iteration for the outputs of the block. On this occasion, the function can also reinitialize its initial states."*
 
 {% highlight cpp %}
 /* ... */
@@ -190,13 +187,15 @@ void fmi2_block( scicos_block* block, const int flag )
     {
       fmi2Terminate( (fmi2Component) block->work );       // Terminate simulation for this component
             
-      // Retrieve solution at t=Tend, for example for outputs
+      // Considering output only floating point continuous values
       double** y = (double**) block->outptr;
-      double outputs[ block->nout ];
-      const fmi2ValueReference* outputIndexes = // Have to figure out how to obtain that
-      fmi2GetReal( (fmi2Component) block->work, outputIndexes, outputs, block->nout );
-      for( int i = 0; i < block->nout; i++ )
-        y[ i ][ 0 ] = outputs[ i ];
+      // Retrieve initial state x
+      if( fmi2GetContinuousStates( (fmi2Component) block->work, block->x, block->nx ) == fmi2Ok )
+      {
+        // Setting outputs the same as continuous states
+        for( int outputIndex = 0; outputIndex < block->nout; outputIndex++ )
+          y[ outputIndex ][ 0 ] = block->x[ outputIndex ];
+      }
             
       fmi2FreeInstance( (fmi2Component) block->work );    // Deallocate memory
         
@@ -210,8 +209,15 @@ void fmi2_block( scicos_block* block, const int flag )
       // But still in sync with simulator time
       fmi2SetTime( (fmi2Component) block->work, get_scicos_time() );
         
+      // Considering output only floating point continuous values
+      double** y = (double**) block->outptr;
       // Retrieve initial state x
-      fmi2GetContinuousStates( (fmi2Component) block->work, block->x, block->nx );
+      if( fmi2GetContinuousStates( (fmi2Component) block->work, block->x, block->nx ) == fmi2Ok )
+      {
+        // Setting outputs the same as continuous states
+        for( int outputIndex = 0; outputIndex < block->nout; outputIndex++ )
+          y[ outputIndex ][ 0 ] = block->x[ outputIndex ];
+      }
         
       break;
     }
