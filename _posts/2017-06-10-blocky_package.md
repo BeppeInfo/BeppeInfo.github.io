@@ -3,7 +3,7 @@ layout: post
 title: My 2017 GSoC Project - Part III
 subtitle: Computational Black Boxes
 category: Programming
-tags: [GSoC 2017, Scilab, Modelica]
+tags: [GSoC-2017, Scilab, Modelica]
 --- 
 
 Hey everyone,
@@ -82,7 +82,7 @@ The integer **flag** informs the current calculation stage, as our function can 
 
 <table style="width:100%">
   <tr> <th>flags</th> <th>inputs                                </th> <th>  outputs   </th> <th>description                                    </th> </tr>
-  <tr> <td>  0  </td> <td>t, nevprt, x, z, inptr, mode, phase   </td> <td>   xd       </td> <td>compute the derivative of continuous time state</td> </tr>
+  <tr> <td>  0  </td> <td>t, nevprt, x, z, inptr, mode, phase   </td> <td>  xd, res   </td> <td>compute the derivative of continuous time state</td> </tr>
   <tr> <td>  1  </td> <td>t, nevprt, x, z, inptr, mode, phase   </td> <td>  outptr    </td> <td>compute the outputs of the block               </td> </tr>
   <tr> <td>  2  </td> <td>t, nevprt>0, x, z, inptr              </td> <td>   x, z     </td> <td>update states due to external activation       </td> </tr>
   <tr> <td>  2  </td> <td>t, nevprt=-1, x, z, inptr, jroot      </td> <td>   x, z     </td> <td>update states due to internal zero-crossing    </td> </tr>
@@ -93,6 +93,7 @@ The integer **flag** informs the current calculation stage, as our function can 
   <tr> <td>  7  </td> <td>                                      </td> <td>            </td> <td>only used for internally implicit blocks       </td> </tr>
   <tr> <td>  9  </td> <td>t, phase=1, nevprt, x, z, inptr       </td> <td>  g, mode   </td> <td>compute zero-crossing surfaces and set modes   </td> </tr>
   <tr> <td>  9  </td> <td>t, phase=2, nevprt, x, z, inptr       </td> <td>     g      </td> <td>compute zero-crossing surfaces                 </td> </tr>
+  <tr> <td> 10  </td> <td>t, nevprt, x, z, inptr, mode, phase   </td> <td>    res     </td> <td>compute jacobian matrix                        </td> </tr>
 </table>
 
 ### Hooking things up

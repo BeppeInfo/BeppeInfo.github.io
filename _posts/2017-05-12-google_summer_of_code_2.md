@@ -3,7 +3,7 @@ layout: post
 title: My participation on Google Summer of Code 2017
 subtitle: Yeah, you read that right
 category: Programming
-tags: [GSoC, Scilab]
+tags: [GSoC-2017, Scilab]
 ---
 
 Greetings, everyone !!

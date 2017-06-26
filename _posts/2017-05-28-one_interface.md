@@ -3,7 +3,7 @@ layout: post
 title: My 2017 GSoC Project - Part II
 subtitle: One Interface to Rule Them All
 category: Programming
-tags: [GSoC, Scilab, Modelica]
+tags: [GSoC-2017, Scilab, Modelica]
 --- 
 
 Hi all,

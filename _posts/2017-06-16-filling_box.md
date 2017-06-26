@@ -3,7 +3,7 @@ layout: post
 title: My 2017 GSoC Project - Part IV
 subtitle: (Un)Filling The Box
 category: Programming
-tags: [GSoC 2017, Scilab, Modelica]
+tags: [GSoC-2017, Scilab, Modelica]
 --- 
 
 Hello there,
