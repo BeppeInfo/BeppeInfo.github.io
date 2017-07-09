@@ -50,6 +50,7 @@ typedef struct
   double* x;      // Vector of continuous-time state
   double* xd;     // Vector of the derivative of the continuous-state, same size nx
   double* res;    // Only used for internally implicit blocks, vector of size nx
+  int *xprop;     // Pointer to the continuous state properties register
   int nin;        // Number of regular input ports
   int* insz;      // Vector of sizes of regular input ports
   void** inptr;   // Tables of pointer to the regular input ports
