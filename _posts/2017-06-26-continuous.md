@@ -36,7 +36,7 @@ In cases where **x'** is not known, can't be expressed only in terms of **t** an
 
 That way, solving the system implies finding **state derivatives** that minimize **F(t,x,x')** value, called [**residual**](https://en.wikipedia.org/wiki/Residual_(numerical_analysis)). In other words, this method deals with **approximate solutions**.
 
-**DAE**s could be converted to a system of coupled **ODE**s through [index reduction](http://reference.wolfram.com/language/tutorial/NDSolveDAE.html#128085219), but solver calculations would be more costly than using a specific algorithm for [index-1](http://reference.wolfram.com/language/tutorial/NDSolveDAE.html#1195304774) **DAE**s. Thereby, it is interesting to support **differential-algebraic** solvers ([**IDA**](https://computation.llnl.gov/projects/sundials/ida), [**KINSOL**](https://computation.llnl.gov/projects/sundials/kinsol), etc.) as well as **ordinary differential** ones ([**CVODE**](https://computation.llnl.gov/projects/sundials/cvode), [**ARKode**](https://computation.llnl.gov/projects/sundials/arkode), etc.).
+**DAE**s could be converted to a system of coupled **ODE**s through [index reduction](http://reference.wolfram.com/language/tutorial/NDSolveDAE.html#128085219), but solver calculations would be more costly than using a specific algorithm for [index-1](http://reference.wolfram.com/language/tutorial/NDSolveDAE.html#1195304774) **DAE**s. Thereby, it is interesting to support **differential-algebraic** solvers (e.g. [**IDA**](https://computation.llnl.gov/projects/sundials/ida)) as well as **ordinary differential** ones ([**CVODE**](https://computation.llnl.gov/projects/sundials/cvode), [**ARKode**](https://computation.llnl.gov/projects/sundials/arkode), etc.).
 
 ### Scicos continuous state update jobs
 
@@ -143,8 +143,8 @@ static void get_output(scicos_block* block)
 {
     // Considering output only floating point continuous values
     double** y = (double**) block->outptr;
-    fmi2Real* output = (fmi2Real*) block->work[ INPUT ];
-    fmi2ValueReference* output_refs = (fmi2ValueReference*) block->work[ INPUT_REFS ];
+    fmi2Real* output = (fmi2Real*) block->work[ OUTPUT ];
+    fmi2ValueReference* output_refs = (fmi2ValueReference*) block->work[ OUTPUT_REFS ];
     // Retrieve output values
     if( fmi2GetReal( (fmi2Component) block->work[ MODEL ], output_refs, block->nout, output ) == fmi2OK )
     {

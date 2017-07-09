@@ -96,8 +96,8 @@ static void get_output(scicos_block* block)
 {
     // Considering output only floating point continuous values
     double** y = (double**) block->outptr;
-    fmi2Real* output = (fmi2Real*) block->work[ INPUT ];
-    fmi2ValueReference* output_refs = (fmi2ValueReference*) block->work[ INPUT_REFS ];
+    fmi2Real* output = (fmi2Real*) block->work[ OUTPUT ];
+    fmi2ValueReference* output_refs = (fmi2ValueReference*) block->work[ OUTPUT_REFS ];
     // Retrieve output values
     if( fmi2GetReal( (fmi2Component) block->work[ MODEL ], output_refs, block->nout, output ) == fmi2OK )
     {
@@ -139,14 +139,15 @@ void fmi2_block( scicos_block* block, const int flag )
                                                     fmi2True,              // Interactive mode
                                                     fmi2True );            // Logging On
             
-            // Create state variables references list
+            // Create state variables references list. For OpenModelica, states and state derivatives
+            // are always the first real values, in this order
             block->work[ STATE_REFS ] = calloc( block->nx, sizeof(fmi2ValueReference) );
             block->work[ STATE_DERIV ] = calloc( block->nx, sizeof(fmi2Real) );
             block->work[ STATE_DERIV_REFS ] = calloc( block->nx, sizeof(fmi2ValueReference) );
             for( int i = 0; i < block->nx; i++ )
             {
-                ((fmi2ValueReference*) block->work[ STATE_REFS ])[ i ] = (fmi2ValueReference) i;
-                ((fmi2ValueReference*) block->work[ STATE_DERIV_REFS ])[ i ] = (fmi2ValueReference) (block->nx + i);
+              ((fmi2ValueReference*) block->work[ STATE_REFS ])[ i ] = (fmi2ValueReference) i;
+              ((fmi2ValueReference*) block->work[ STATE_DERIV_REFS ])[ i ] = (fmi2ValueReference) (block->nx + i);
             }
             
             // Create input variables references list
@@ -160,11 +161,11 @@ void fmi2_block( scicos_block* block, const int flag )
             // Define simulation parameters. Internally calls state and event setting functions, 
             // which should be called before any model evaluation/event processing ones
             fmi2SetupExperiment( (fmi2Component) block->work[ MODEL ],     // FMI2 component   
-                                fmi2False,                                // Tolerance undefined
-                                0.0,                                      // Tolerance value (not used)
-                                0.0,                                      // Start time
-                                fmi2False,                                // Stop time undefined 
-                                1.0 );                                    // Stop time (not used)
+                                 fmi2False,                                // Tolerance undefined
+                                 0.0,                                      // Tolerance value (not used)
+                                 0.0,                                      // Start time
+                                 fmi2False,                                // Stop time undefined 
+                                 1.0 );                                    // Stop time (not used)
               
             // FMI2 component initialization
             fmi2EnterInitializationMode( (fmi2Component) block->work[ MODEL ] );
@@ -246,7 +247,8 @@ void fmi2_block( scicos_block* block, const int flag )
             
             get_output( block );
             
-            fmi2Terminate( (fmi2Component) block->work[ MODEL ] );       // Terminate simulation for this component
+            // Terminate simulation for this component
+            fmi2Terminate( (fmi2Component) block->work[ MODEL ] );       
             
             // Deallocate memory
             
@@ -263,7 +265,8 @@ void fmi2_block( scicos_block* block, const int flag )
         // Flag 6: Output state initialisation
         case ReInitialization:
         {
-            fmi2Reset( (fmi2Component) block->work[ MODEL ] );       // Reset simulation to initial values
+            // Reset simulation to initial values
+            fmi2Reset( (fmi2Component) block->work[ MODEL ] );       
             
             // Get reinitialized model state and output
             
