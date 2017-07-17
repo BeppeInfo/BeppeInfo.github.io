@@ -13,7 +13,7 @@ On our continuing journey for adding **OpenModelica** support to **Scilab**/**Xc
 As said (*more or less*) on previous posts, **FMI2**-compliant applications export **code and data for dynamic systems** in packages called **FMU**s (**Functional Mock-up Units**). Simply put, **FMU**s are [**Zip**](https://en.wikipedia.org/wiki/Zip_(file_format)) files containing all components necessary for simulating the given model in a host application. 
 
 - **Structure of zip file of an FMU**:
-{% highlight cpp %}
+{% highlight javascript %}
 modelDescription.xml                      // Description of FMU (required file)
 model.png                                 // Optional image file of FMU icon
 documentation                             // Optional directory containing the FMU documentation
@@ -52,7 +52,7 @@ resources                                 // Optional resources needed by the FM
 // also more folders can be added under resources (tool/model specific).
 // In order for the FMU to access these resource files, the resource directory
 // must be available in unzipped form and the absolute path to this directory
-// must be reported via argument ′′fmuResourceLocation′′ via fmi2Instantiate.
+// must be reported via argument "fmuResourceLocation" via fmi2Instantiate.
 
 {% endhighlight %}
 
@@ -66,7 +66,7 @@ Whatever the reason, it's from this description file that the **simulator applic
 
 For instance, see the case of **Xcos** **chaos block** **Modelica** example:
 
-{% highlight modelica %}
+{% highlight python %}
 class chaos
  input Real eps,gamma;
  Real x(start=0), y(start=1);
@@ -180,7 +180,7 @@ For **Scilab**, processing of that information is performed by **scripts** writt
 
 As an practical example, the code below shows how to perform this data extraction:
 
-{% highlight scilab %}
+{% highlight javascript %}
 modelDescriptionTree = xmlRead( 'modelDescription.xml' );   // Read XML file data into a tree-like native data structure
 
 modelDescription = modelDescriptionTree.root;               // Take data tree's base node (root)
