@@ -1,7 +1,7 @@
 ---
 layout: post
 title: My 2017 GSoC Project - Part VIII
-subtitle: Describe and Distribute (or Vice Versa)
+subtitle: Describe Distribution (or Vice Versa)
 category: Programming
 tags: [GSoC-2017, Scilab, Modelica]
 --- 
@@ -64,7 +64,7 @@ As stated in **FMI2 documentation**, "All static information related to an **FMU
 
 Whatever the reason, it's from this description file that the **simulator application** should obtain information regarding model's attributes like **name**, **type**, FMI version compatibility, and **variables** (whether state, input or output) **number**, **units**, **names**, **initial values**, etc... 
 
-For instance, see the case of **Xcos** **chaos block** **Modelica** example:
+For instance, see the case of **Xcos** **"chaos" block** **Modelica** example:
 
 {% highlight python %}
 class chaos
