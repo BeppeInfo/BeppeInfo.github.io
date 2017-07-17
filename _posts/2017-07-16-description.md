@@ -53,6 +53,7 @@ resources                                 // Optional resources needed by the FM
 // In order for the FMU to access these resource files, the resource directory
 // must be available in unzipped form and the absolute path to this directory
 // must be reported via argument ′′fmuResourceLocation′′ via fmi2Instantiate.
+
 {% endhighlight %}
 
 As seen above, those components are mainly the model **libraries** (exporting **FMI2** interface functions) for the host platform, their correspondent **C sources**, and the **model description file**, which we are addressing today.
@@ -179,7 +180,7 @@ For **Scilab**, processing of that information is performed by **scripts** writt
 
 As an practical example, the code below shows how to perform this data extraction:
 
-{% highlight matlab %}
+{% highlight scilab %}
 modelDescriptionTree = xmlRead( 'modelDescription.xml' );   // Read XML file data into a tree-like native data structure
 
 modelDescription = modelDescriptionTree.root;               // Take data tree's base node (root)
