@@ -64,7 +64,7 @@ As stated in **FMI2 documentation**, "All static information related to an **FMU
 
 Whatever the reason, it's from this description file that the **simulator application** should obtain information regarding model's attributes like **name**, **type**, FMI version compatibility, and **variables** (whether state, input or output) **number**, **units**, **names**, **initial values**, etc... 
 
-For instance, see the case of **Xcos** **"chaos"** **Modelica** block example:
+For instance, see the case of **Xcos** **"chaos"** **Modelica** example block:
 
 <div style="float:left; width:50%;">
   <p align="center">
@@ -73,6 +73,7 @@ For instance, see the case of **Xcos** **"chaos"** **Modelica** block example:
 </div>
 <div style="float:left; width:50%;">
   {% highlight python %}
+  
   class chaos
   input Real eps,gamma;
   Real x(start=0), y(start=1);
