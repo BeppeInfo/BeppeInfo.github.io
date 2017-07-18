@@ -84,7 +84,7 @@ For instance, see the case of **Xcos** **"chaos"** **Modelica** example block:
   {% endhighlight %}
 </div>
 
-<p></p>
+<p align="center">(Corresponding <b>Modelica</b> code)</p>
  
 ... and resulting description file (simplified for readability):
 
