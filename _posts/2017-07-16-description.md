@@ -64,7 +64,7 @@ As stated in **FMI2 documentation**, "All static information related to an **FMU
 
 Whatever the reason, it's from this description file that the **simulator application** should obtain information regarding model's attributes like **name**, **type**, FMI version compatibility, and **variables** (whether state, input or output) **number**, **units**, **names**, **initial values**, etc... 
 
-For instance, see the case of **Xcos** **"chaos" block** **Modelica** example:
+For instance, see the case of **Xcos** **"chaos"** **Modelica** block example:
 
 <div style="float:left; width:50%;">
   <p align="center">
@@ -83,6 +83,7 @@ For instance, see the case of **Xcos** **"chaos" block** **Modelica** example:
   {% endhighlight %}
 </div>
 
+ 
 ... and resulting description file (simplified for readability):
 
 {% highlight xml %}
