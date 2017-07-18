@@ -66,15 +66,22 @@ Whatever the reason, it's from this description file that the **simulator applic
 
 For instance, see the case of **Xcos** **"chaos" block** **Modelica** example:
 
-{% highlight python %}
-class chaos
- input Real eps,gamma;
- Real x(start=0), y(start=1);
-equation
- der(x)=y;
- der(y)=x-x^3-eps*y+gamma*cos(time);
-end chaos;
-{% endhighlight %}
+<div style="float:left; width:50%;">
+  <p align="center">
+    <img src="/img/chaos_model.png">
+  </p>
+</div>
+<div style="float:left; width:50%;">
+  {% highlight python %}
+  class chaos
+  input Real eps,gamma;
+  Real x(start=0), y(start=1);
+  equation
+  der(x)=y;
+  der(y)=x-x^3-eps*y+gamma*cos(time);
+  end chaos;
+  {% endhighlight %}
+</div>
 
 ... and resulting description file (simplified for readability):
 
@@ -254,6 +261,12 @@ disp( stateDerivativeNames );
 disp( parameterNames );
 disp( outputNames );
 {% endhighlight %}
+
+... whose output can be seen in **Scilab**'s console:
+
+<p align="center">
+  <img src="/img/description_read_output.png">
+</p>
 
 ### Wrapping up
 
