@@ -66,6 +66,7 @@ Whatever the reason, it's from this description file that the **simulator applic
 
 For instance, see the case of **Xcos** **"chaos"** **Modelica** example block:
 
+<p align="center">
 <div style="float:left; width:50%;">
   <p align="center">
     <img src="/img/chaos_model.png">
@@ -83,7 +84,7 @@ For instance, see the case of **Xcos** **"chaos"** **Modelica** example block:
   end chaos;
   {% endhighlight %}
 </div>
-
+</p>
  
 ... and resulting description file (simplified for readability):
 
