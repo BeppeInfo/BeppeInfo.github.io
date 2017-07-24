@@ -255,7 +255,7 @@ function code = generate_fmi2_wrapper( model_desc_file )
 endfunction
 {% endhighlight %}
 
-Notice that our **FMI2** layer code is put into a header (**.h**) file now (located in **<system_includes_dir>/scilab/**), as binary distributions of **Scilab** doesn't ship sources (**.c**). Also, as we have to generate the actual **C** source file including the wrapper, this gives the opportunity to add the **variable references** (indexing inputs, outputs, states, etc...) vectors that couldn't be passed to the **computational function** otherwise.
+Notice that our **FMI2** layer code is put into a header (**.h**) file now (located in **/system_includes_dir/scilab/**), as binary distributions of **Scilab** doesn't ship sources (**.c**). Also, as we have to generate the actual **C** source file including the wrapper, this gives the opportunity to add the **variable references** (indexing inputs, outputs, states, etc...) vectors that couldn't be passed to the **computational function** otherwise.
 
 ### Model Description Parsing
 
@@ -279,7 +279,7 @@ function [ok,name,guid,nipar,nrpar,nopar,nz,nx,nx_der,nx_ns,nin,nout,nm,ng,dep_u
 {% endhighlight %}
 
 {% highlight javascript %}
-function [nipar,nrpar,nopar,nz,nx,nx_der,nx_ns,nin,nout,nm,ng,dep_u]=reading_incidence(model_desc_file)
+function [nipar,nrpar,nopar,nz,nx,nx_der,nx_ns,nin,nout,nm,ng,dep_u] = reading_incidence( model_desc_file )
     // this function creates the matrix dep_u given by the xml format.
     // It is used for modelica compiler.
     // number of lines represents the number of input, number of columns represents the number of outputs.
@@ -363,7 +363,7 @@ function ok = Link_modelica_C( model_C_file, model_path )
         [pathx, fnamex, extensionx] = fileparts( fileSearched( j ) );
         lib_name = fullfile(pathx, fnamex);
         if getos() == "Windows" then
-            lib_name = strsubst( lib_name, "\", "/" );
+            lib_name = strsubst( lib_name, '\', '/' );
         end
         model_libs = [ model_libs; lib_name ];
     end
