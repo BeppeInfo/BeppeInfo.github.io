@@ -184,7 +184,7 @@ from which we are most interested in obtaining:
 - Internal state and external variables information, which could be identified either by name (provided that **variableNamingConvention** is set to **"structured"**, which guarantees a naming convention) or properties;
 - **Dependency relationship** between these said variables, which could allow the construction of optimized **[sparse](https://en.wikipedia.org/wiki/Sparse_matrix) Jacobian matrices** for complex models.
 
-### Scilab's way
+### Scilab's Way
 
 For **Scilab**, processing of that information is performed by **scripts** written in its own interpreted language. Thankfully (and expectedly), **Scilab** language already has available support for parsing **XML** files/strings, facilitating our work here by a large amount.
 
@@ -195,17 +195,16 @@ modelDescriptionTree = xmlRead( 'modelDescription.xml' );   // Read XML file dat
 
 modelDescription = modelDescriptionTree.root;               // Take data tree's base node (root)
 
-disp( modelDescription.name );                              // Display base node's name
-
 modelName = modelDescription.attributes( 'modelName' );     // Aquire and display model's name attribute
-disp( modelName );
+disp( strcat( [ "Model name: ", modelName ] ) );
 
 modelGUID = modelDescription.attributes( 'guid' );          // Aquire and display model's GUID
-disp( modelGUID );
+disp( strcat( [ "Model GUID: ", modelGUID ] ) );
 
 // Aquire and display number of model's event indicators
 modelEventIndicatorsNumber = modelDescription.attributes( 'numberOfEventIndicators' );
-disp( modelEventIndicatorsNumber );
+disp( strcat( [ "Number of zero-crossings: ", modelEventIndicatorsNumber ] ) );
+
 
 // Find model variables sub-node
 for i=1:length( modelDescription.children )
@@ -220,8 +219,9 @@ stateNames = [];
 stateDerivativeNames = [];
 parameterNames = [];
 outputNames = [];
+variableNames = [];
 
-// Walks through every variable node and fill the different lists according to the properties of each one
+// Walk through every variable node and fill the different lists according to the properties of each one
 for i=1:length( modelVariables.children )
     variableNode = modelVariables.children( i );
     variableAttributes = variableNode.attributes;
@@ -255,6 +255,7 @@ for i=1:length( modelVariables.children )
             parameterNames( $ + 1 ) = variableName;
         end
     end
+    variableNames( $ + 1 ) = variableName;
 end
 
 // Display results
@@ -263,6 +264,53 @@ disp( stateNames );
 disp( stateDerivativeNames );
 disp( parameterNames );
 disp( outputNames );
+
+// Fill state derivatives dependency matrix (initialized with "False" booleans)
+aux = ones( size( stateDerivativeNames, 1 ), size( stateNames, 1 ) );
+dependencyMatrix=( aux <> aux );
+
+// Find model structure -> derivatives sub-node
+modelDerivativesStructure = [];
+for i=1:length( modelDescription.children )
+    childNode = modelDescription.children( i );
+    if childNode.name == "ModelStructure" then
+        modelStructure = childNode;
+        for i=1:length( modelStructure.children )
+            childNode = modelStructure.children( i );
+            if childNode.name == "Derivatives" then
+                modelDerivativesStructure = childNode;
+            end
+        end
+    end
+end
+
+// Mark (set to "True") every state variable on which each derivative depends
+if modelDerivativesStructure <> [] then
+    for i=1:length( modelDerivativesStructure.children )
+        derivativeAttributes = modelDerivativesStructure.children( i ).attributes;
+        // Global index of derivative variable
+        variableIndex = round( strtod( derivativeAttributes( "index" ) ) );
+        derivativeName = variableNames( variableIndex );
+        // Index of derivative variable in derivatives list
+        derivativeIndex = find( stateDerivativeNames == derivativeName );
+        if derivativeIndex <> [] then
+            // Transform string of derivative dependencies in a list of indexes
+            dependencyIndexes = round( strtod( strsplit( derivativeAttributes("dependencies"), " " ) ) );
+            for j=1:size( stateNames, 1 )
+                stateName = stateNames( j );
+                // Take global index of state variable and verify if it is a dependency 
+                variableIndex = find( variableNames == stateName );
+                if find( dependencyIndexes == variableIndex ) <> [] then
+                    dependencyMatrix( derivativeIndex, j ) = %t;
+                else
+                    dependencyMatrix( derivativeIndex, j ) = %f;
+                end
+            end
+        end
+    end
+end
+
+disp( dependencyMatrix, "Derivatives dependency matrix:" );
 {% endhighlight %}
 
 ... whose output can be seen in **Scilab**'s console:
@@ -271,7 +319,7 @@ disp( outputNames );
   <img src="/img/description_read_output.png">
 </p>
 
-### Wrapping up
+### Wrapping Up
 
 The last piece of code was intended just for showing how the **XML** information could be read in **Scilab** scripts, but almost the same commands can compose the code responsible for filling the correspondent **Xcos block** data structure. That will be addressed in our next post.    
 
