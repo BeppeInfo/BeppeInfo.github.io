@@ -203,7 +203,7 @@ function  ok = modelicac( model_flat_file, Jacobian, init, model_C_file, model_d
     model_flat_script = pathconvert( tmpdir + model_name + ".mos", %f, %t );
     model_flat_package = pathconvert( tmpdir + model_name + ".fmu", %f, %t );
     
-    // Generate OpenModelica script file
+    // Generate OpenModelica script file (builds FMU package with partial derivative support and unzips it)
     compile_commands = [];
     if Jacobian then
         compile_commands($ + 1) = "setCommandLineOptions(""--debug=fmuExperimental""); getErrorString();";
@@ -239,15 +239,15 @@ function code = generate_fmi2_wrapper( model_desc_file )
     
     // Generate C code for specific fixed size variables lists
     code = [
-               strcat( "static fmi2Real INPUTS_LIST[ ", string(length(in_refs)), " ] = { 0.0 };" ),
-               strcat( "static fmi2ValueReference INPUT_REFS_LIST[ ", string(length(in_refs)), " ] = { ", string(in_refs) + "," , " };" ),
-               strcat( "static fmi2ValueReference STATE_REFS_LIST[ ", string(length(x_refs)), " ] = { ", string(x_refs) + "," , " };" ),
-               strcat( "static fmi2Real STATE_DERS_LIST[ ", string(length(x_der_refs)), " ] = { 0.0 };" ),
-               strcat( "static fmi2ValueReference STATE_DER_REFS_LIST[ ", string(length(x_der_refs)), " ] = { ", string(x_der_refs) + "," , " };" ),
-               strcat( "static fmi2Real OUTPUTS_LIST[ ", string(length(out_refs)), " ] = { 0.0 };" ),
-               strcat( "static fmi2ValueReference OUTPUT_REFS_LIST[ ", string(length(out_refs)), " ] = { ", string(out_refs) + "," , " };" ),
-               strcat( "static fmi2Real PARAMETERS_LIST[ ", string(length(par_refs)), " ] = { 0.0 };" ),
-               strcat( "static fmi2ValueReference PARAMETER_REFS_LIST[ ", string(length(par_refs)), " ] = { ", string(par_refs) + "," , " };" )
+               strcat("static fmi2Real inputsList[ ", string(length(in_refs)), " ] = { 0.0 };"),
+               strcat("const fmi2ValueReference INPUT_REFS_LIST[ ", string(length(in_refs)), " ] = { ", string(in_refs) + "," , " };"),
+               strcat("const fmi2ValueReference STATE_REFS_LIST[ ", string(length(x_refs)), " ] = { ", string(x_refs) + "," , " };"),
+               strcat("static fmi2Real stateDerivativesList[ ", string(length(x_der_refs)), " ] = { 0.0 };"),
+               strcat("const fmi2ValueReference STATE_DER_REFS_LIST[ ", string(length(x_der_refs)), " ] = { ", string(x_der_refs) + "," , " };"),
+               strcat("static fmi2Real outputsList[ ", string(length(out_refs)), " ] = { 0.0 };"),
+               strcat("const fmi2ValueReference OUTPUT_REFS_LIST[ ", string(length(out_refs)), " ] = { ", string(out_refs) + "," , " };"),
+               strcat("static fmi2Real parametersList[ ", string(length(par_refs)), " ] = { 0.0 };"),
+               strcat("const fmi2ValueReference PARAMETER_REFS_LIST[ ", string(length(par_refs)), " ] = { ", string(par_refs) + "," , " };"),
            ];
            
     // Append generic FMI2 wrapper code
