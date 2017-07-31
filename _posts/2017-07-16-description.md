@@ -229,12 +229,10 @@ for i=1:length( modelVariables.children )
     // Only continuous states, inputs and outputs considered
     if variableAttributes( 'variability' ) == 'continuous' then
         // States are internal (local or non-interfacing variables)
-        // Here, we expose them as outputs so that they could be monitored as well
         if variableAttributes( 'causality' ) == 'local' then
             // States are defined exactly at the beginning of simulation
             if variableAttributes( 'initial' ) == 'exact' then
                 stateNames( $ + 1 ) = variableName;
-                outputNames( $ + 1 ) = variableName;
             // State derivatives are calculated dynamically from current states
             elseif variableAttributes( 'initial' ) == 'calculated' then
                 // Model descriptions could also present internal calculated 
