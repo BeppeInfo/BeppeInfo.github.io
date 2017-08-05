@@ -123,19 +123,20 @@ From that we can deduce that flag **0** has deal with **xd** input and **res** o
 So, with things figured out, we can finally implement those jobs in our **FMI2** wrapper:
 
 {% highlight cpp %}
-/* ... */
+/* Includes and definitions */
 
 // Utility function for setting Scicos block -> FMI2 model input
 static void set_input(scicos_block* block)
 {
     // Considering input only floating point continuous values
     double** u = (double**) block->inptr;
-    fmi2Real* input = (fmi2Real*) block->work[ INPUT ];
-    fmi2ValueReference* input_refs = (fmi2ValueReference*) block->work[ INPUT_REFS ];
     // Set u inputs before calculation derivatives
-    for( int i = 0; i < block->nin; i++ )
-        input[ i ] = u[ i ][ 0 ];
-    fmi2SetReal( (fmi2Component) block->work[ MODEL ], input_refs, block->nin, input );
+    if( block->nin > 0 )
+    {
+        for( int i = 0; i < block->nin; i++ )
+            inputsList[ i ] = u[ i ][ 0 ];
+        fmi2SetReal( (fmi2Component) block->work, INPUT_REFS_LIST, block->nin, inputsList );
+    }
 }
 
 // Utility function for getting FMI2 model -> Scicos block output
@@ -143,63 +144,51 @@ static void get_output(scicos_block* block)
 {
     // Considering output only floating point continuous values
     double** y = (double**) block->outptr;
-    fmi2Real* output = (fmi2Real*) block->work[ OUTPUT ];
-    fmi2ValueReference* output_refs = (fmi2ValueReference*) block->work[ OUTPUT_REFS ];
     // Retrieve output values
-    if( fmi2GetReal( (fmi2Component) block->work[ MODEL ], output_refs, block->nout, output ) == fmi2OK )
+    if( fmi2GetReal( (fmi2Component) block->work, OUTPUT_REFS_LIST, block->nout, outputsList ) == fmi2OK )
     {
         // Setting outputs the same as continuous states
         for( int i = 0; i < block->nout; i++ )
-            y[ i ][ 0 ] = output[ i ];
+            y[ i ][ 0 ] = outputsList[ i ];
     }
-    
-    // For now, we assume no discrete outputs
 }
 
 /* ... */
 
-void fmi2_block( scicos_block* block, const int flag )
+SCICOS_IMPEXP void BLOCK_FUNCTION_NAME( cicos_block* block, const int flag )
 {
     switch (flag)
     {
         /* ... */
   
         // Flag 0: Update continuous state
-        case DerivativeState:
-        {
-            fmi2SetTime( (fmi2Component) block->work[ MODEL ], get_scicos_time() );
-            
-            set_input( block );
-            
-            // Get state time derivatives
-            fmi2Real* x_dot = (fmi2Real*) block->work[ STATE_DERIV ];
-            fmi2GetDerivatives( (fmi2Component) block->work[ MODEL ], x_dot, block->nx );
-            
-            // Output both residuals for implicit (DAE) solvers
-            for( int i = 0; i < block->nx; i++ )
-            {
-                block->res[ i ] = x_dot[ i ] - block->xd[ i ];
-                // When using DAE solvers, xd and res point to same array, 
-                // so use this to prevent overriding the residual (only set derivatives for ODEs)
-                if( block->res != block->xd ) block->xd[ i ] = x_dot[ i ];
-            }
-            
-            break;
-        }
+         case DerivativeState:
+         {
+             fmi2SetTime( (fmi2Component) block->work, get_scicos_time() );
+             
+             set_input( block );
+             
+             // Get state time derivatives
+             fmi2GetDerivatives( (fmi2Component) block->work, stateDerivativesList, block->nx );
+             
+             // Output both residuals for implicit (DAE) solvers
+             for( int i = 0; i < block->nx; i++ )
+             {
+                 block->res[ i ] = stateDerivativesList[ i ] - block->xd[ i ];
+             }
+             
+             break;
+         }
 
         /* ... */
     
         // Flag 1: Update output state
-        case OutputUpdate:
-        {
-            fmi2SetTime( (fmi2Component) block->work[ MODEL ], get_scicos_time() );
-            
-            set_input( block );
-            
-            get_output( block );
-            
-            break;
-        }
+         case OutputUpdate:
+         {
+             get_output( block );
+             
+             break;
+         }
     
         case Jacobian:
         {

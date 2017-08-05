@@ -57,60 +57,77 @@ scicos_block;
 Then, assuming that the **work** pointer is the one to be used, we initialized the block inside our **Scicos**/**FMI2** wrapper:
 
 {% highlight cpp %}
+#include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
+
+// Scilab Scicos block interface and definitions
 #include "scicos_block4.h"
-
 #include "scicos.h"
+#include "dynlib_scicos.h"
 
+// FMI2 API definitions
 #include "fmi2TypesPlatform.h"
 #include "fmi2FunctionTypes.h"
 #include "fmi2Functions.h"
 
-// Enumeration of block->work contents
-enum { MODEL, STATE_REFS, STATE_DERIV, STATE_DERIV_REFS, INPUT, INPUT_REFS, OUTPUT, OUTPUT_REFS, CONTENTS_NUMBER };
+// Definitions based on model properties
 
-// Simple placeholder logging message
+#define BLOCK_FUNCTION_NAME /* ... */                      
+#define MODEL_NAME /* ... */
+#define MODEL_GUID /* ... */
+
+static fmi2Real inputsList[] = /* ... */;
+const static fmi2ValueReference INPUT_REFS_LIST[] = /* ... */;
+static fmi2Real outputsList[] = /* ... */;
+const static fmi2ValueReference OUTPUT_REFS_LIST[] = /* ... */;
+static fmi2Real stateDetivativesList[] = /* ... */;
+const static fmi2ValueReference STATE_REFS_LIST[] = /* ... */;
+const static fmi2ValueReference STATE_DER_REFS_LIST[] = /* ... */;
+
+// Simple terminal message logging function
 static void print_log_message( fmi2ComponentEnvironment componentEnvironment, fmi2String instanceName, 
-                        fmi2Status status, fmi2String category, fmi2String message, ... )
+                               fmi2Status status, fmi2String category, fmi2String message, ... )
 {
-  va_list args;
-  va_start( args, message );
-  vprintf( (const char*) message, args );
-  va_end( args );
+    va_list args;
+    va_start( args, message );
+    vprintf( (const char*) message, args );
+    printf( "\n" );
+    va_end( args );
 }
 
 // Utility function for setting Scicos block -> FMI2 model input
-static void set_input(scicos_block* block)
+static void set_input( scicos_block* block )
 {
     // Considering input only floating point continuous values
     double** u = (double**) block->inptr;
-    fmi2Real* input = (fmi2Real*) block->work[ INPUT ];
-    fmi2ValueReference* input_refs = (fmi2ValueReference*) block->work[ INPUT_REFS ];
     // Set u inputs before calculation derivatives
-    for( int i = 0; i < block->nin; i++ )
-        input[ i ] = u[ i ][ 0 ];
-    fmi2SetReal( (fmi2Component) block->work[ MODEL ], input_refs, block->nin, input );
+    if( block->nin > 0 )
+    {
+        for( int i = 0; i < block->nin; i++ )
+            inputsList[ i ] = u[ i ][ 0 ];
+        fmi2SetReal( (fmi2Component) block->work, INPUT_REFS_LIST, block->nin, inputsList );
+    }
 }
 
 // Utility function for getting FMI2 model -> Scicos block output
-static void get_output(scicos_block* block)
+static void get_output( scicos_block* block )
 {
     // Considering output only floating point continuous values
     double** y = (double**) block->outptr;
-    fmi2Real* output = (fmi2Real*) block->work[ OUTPUT ];
-    fmi2ValueReference* output_refs = (fmi2ValueReference*) block->work[ OUTPUT_REFS ];
     // Retrieve output values
-    if( fmi2GetReal( (fmi2Component) block->work[ MODEL ], output_refs, block->nout, output ) == fmi2OK )
+    if( fmi2GetReal( (fmi2Component) block->work, OUTPUT_REFS_LIST, block->nout, outputsList ) == fmi2OK )
     {
         // Setting outputs the same as continuous states
         for( int i = 0; i < block->nout; i++ )
-            y[ i ][ 0 ] = output[ i ];
+            y[ i ][ 0 ] = outputsList[ i ];
     }
     
     // For now, we assume no discrete outputs
 }
 
 // The computational function itself
-void fmi2_block( scicos_block* block, const int flag )
+SCICOS_IMPEXP void BLOCK_FUNCTION_NAME( scicos_block* block, const int flag )
 {
     static fmi2EventInfo eventInfo;
 
@@ -127,32 +144,15 @@ void fmi2_block( scicos_block* block, const int flag )
                                                       .freeMemory = free, 
                                                       .stepFinished = NULL,
                                                       .componentEnvironment = NULL };
-            
-            block->work = (void**) calloc( CONTENTS_NUMBER, sizeof(void*) );
                                                       
             // Store FMI2 component in the work field     
-            block->work[ MODEL ] = fmi2Instantiate( block->label,          // Instance name 
+            block->work = (void**) fmi2Instantiate( MODEL_NAME,            // Instance name 
                                                     fmi2ModelExchange,     // Exported model type
-                                                    block->uid,            // Model GUID, have to be obtained
-                                                    "file:/data_path/",    // Optional FMU resources location
+                                                    MODEL_GUID,            // Model GUID, have to be obtained
+                                                    "",                    // Optional FMU resources location
                                                     &functions,            // User provided callbacks
                                                     fmi2True,              // Interactive mode
                                                     fmi2True );            // Logging On
-            
-            // Create state variables references list. For OpenModelica, states and state derivatives
-            // are always the first real values, in this order
-            block->work[ STATE_REFS ] = calloc( block->nx, sizeof(fmi2ValueReference) );
-            block->work[ STATE_DERIV ] = calloc( block->nx, sizeof(fmi2Real) );
-            block->work[ STATE_DERIV_REFS ] = calloc( block->nx, sizeof(fmi2ValueReference) );
-            for( int i = 0; i < block->nx; i++ )
-            {
-              ((fmi2ValueReference*) block->work[ STATE_REFS ])[ i ] = (fmi2ValueReference) i;
-              ((fmi2ValueReference*) block->work[ STATE_DERIV_REFS ])[ i ] = (fmi2ValueReference) (block->nx + i);
-            }
-            
-            // Create input variables references list
-            block->work[ INPUT ] = calloc( block->nin, sizeof(fmi2Real) );
-            block->work[ INPUT_REFS ] = calloc( block->nin, sizeof(fmi2ValueReference) );
             
             // Need to set input references based on model description (to be implemented)
 
@@ -160,7 +160,7 @@ void fmi2_block( scicos_block* block, const int flag )
             
             // Define simulation parameters. Internally calls state and event setting functions, 
             // which should be called before any model evaluation/event processing ones
-            fmi2SetupExperiment( (fmi2Component) block->work[ MODEL ],     // FMI2 component   
+            fmi2SetupExperiment( (fmi2Component) block->work,              // FMI2 component   
                                  fmi2False,                                // Tolerance undefined
                                  0.0,                                      // Tolerance value (not used)
                                  0.0,                                      // Start time
@@ -168,32 +168,24 @@ void fmi2_block( scicos_block* block, const int flag )
                                  1.0 );                                    // Stop time (not used)
               
             // FMI2 component initialization
-            fmi2EnterInitializationMode( (fmi2Component) block->work[ MODEL ] );
-            fmi2ExitInitializationMode( (fmi2Component) block->work[ MODEL ] );
+            fmi2EnterInitializationMode( (fmi2Component) block->work );
+            fmi2ExitInitializationMode( (fmi2Component) block->work );
               
             // Event iteration
             eventInfo.newDiscreteStatesNeeded = fmi2True;
             while( eventInfo.newDiscreteStatesNeeded )
             {
                 // update discrete states
-                fmi2NewDiscreteStates( (fmi2Component) block->work[ MODEL ], &eventInfo );
+                fmi2NewDiscreteStates( (fmi2Component) block->work, &eventInfo );
                 // if( eventInfo.terminateSimulation ) goto TERMINATE_MODEL;
             }
               
             // Enable iterative derivatives calculation and integration
-            fmi2EnterContinuousTimeMode( (fmi2Component) block->work[ MODEL ] );
+            fmi2EnterContinuousTimeMode( (fmi2Component) block->work );
               
-            fmi2GetContinuousStates( (fmi2Component) block->work[ MODEL ], block->x, block->nx );
-            
-            // Create output variables references list
-            block->work[ OUTPUT ] = calloc( block->nout, sizeof(fmi2Real) );
-            block->work[ OUTPUT_REFS ] = calloc( block->nout, sizeof(fmi2ValueReference) );
-            
-            // Need to set output references based on model description (to be implemented)
+            fmi2GetContinuousStates( (fmi2Component) block->work, block->x, block->nx );
             
             get_output( block );          // Get initial outputs
-              
-            // For now, we assume no discrete states
               
             break;
         }
@@ -236,43 +228,32 @@ void fmi2_block( scicos_block* block, const int flag )
     {
         /* ... */
         
-        // Flag 5: simulation end and memory deallication
+        // Flag 5: simulation end and memory deallocation
         case Ending:                    
         {
             // Get final state and output
         
-            fmi2SetTime( (fmi2Component) block->work[ MODEL ], get_scicos_time() );
+            fmi2SetTime( (fmi2Component) block->work, get_scicos_time() );
             
-            fmi2GetContinuousStates( (fmi2Component) block->work[ MODEL ], block->x, block->nx );
+            fmi2GetContinuousStates( (fmi2Component) block->work, block->x, block->nx );
             
             get_output( block );
             
-            // Terminate simulation for this component
-            fmi2Terminate( (fmi2Component) block->work[ MODEL ] );       
+            fmi2Terminate( (fmi2Component) block->work );       // Terminate simulation for this component
             
-            // Deallocate memory
-            
-            free( block->work[ STATE_REFS ] );
-            free( block->work[ STATE_DERIV ] );
-            free( block->work[ STATE_DERIV_REFS ] );
-            free( block->work[ INPUT ] );
-            free( block->work[ INPUT_REFS ] );
-            
-            fmi2FreeInstance( (fmi2Component) block->work[ MODEL ] );
+            // Deallocate memory            
+            fmi2FreeInstance( (fmi2Component) block->work );
             
             break;
         }
         // Flag 6: Output state initialisation
         case ReInitialization:
         {
-            // Reset simulation to initial values
-            fmi2Reset( (fmi2Component) block->work[ MODEL ] );       
+            // Set reinitialized model state and get output
             
-            // Get reinitialized model state and output
+            fmi2SetTime( (fmi2Component) block->work, get_scicos_time() );
             
-            fmi2SetTime( (fmi2Component) block->work[ MODEL ], get_scicos_time() );
-            
-            fmi2GetContinuousStates( (fmi2Component) block->work[ MODEL ], block->x, block->nx );
+            fmi2SetContinuousStates( (fmi2Component) block->work, block->x, block->nx );
             
             get_output( block );
             
