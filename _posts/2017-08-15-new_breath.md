@@ -153,11 +153,11 @@ SCICOS_BLOCK_EXPORT void BLOCK_FUNCTION_NAME(scicos_block* block, const int flag
     
     fmi2SetTime( model, (fmi2Real) get_scicos_time() );
     
-    fmi2SetContinuousStates( model, statesList, block->nx );
     for( i = 0; i < block->nx; i++ )
     {
-        block->x[ i ] = (double) statesList[ i ];
+        statesList[ i ] = (fmi2Real) block->x[ i ];
     }
+    fmi2SetContinuousStates( model, statesList, block->nx );
     
     fmi2GetEventIndicators( model, eventIndicatorsList, block->ng );
     
