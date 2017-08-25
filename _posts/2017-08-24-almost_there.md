@@ -25,55 +25,40 @@ buildModelFMU( model_name, version="2.0", fmuType="me", platforms={"static"} );
 Finally, comparison between the old **modelicac** compiler and **OpenModelica** one shows that the new implementation is able to yield similar results, which is a must, in most of the cases:
 
 <div style="float:left; width:50%;">
-  <p align="center">
-    <img src="/img/modelicac_chaos.png">
-  </p>
+  <p align="center"> <img src="/img/modelicac_chaos.png"> </p>
   <p align="center">(<b>modelicac</b> "Chaos" model simulation)</p>
 </div>
 <div style="float:left; width:50%;">
-  <p align="center">
-    <img src="/img/omc_chaos.png">
-  </p>
+  <p align="center"> <img src="/img/omc_chaos.png"> </p>
   <p align="center">(<b>omc</b> "Chaos" model simulation)</p>
 </div>
 
 <div style="float:left; width:50%;">
-  <p align="center">
-    <img src="/img/modelicac_rlc.png">
-  </p>
+  <p align="center"> <img src="/img/modelicac_rlc.png"> </p>
+  <p align="center">(<b>modelicac</b> RLC circuit simulation)</p>
 </div>
 <div style="float:left; width:50%;">
-  <p align="center">
-    <img src="/img/omc_rlc.png">
-  </p>
+  <p align="center"> <img src="/img/omc_rlc.png"> </p>
+  <p align="center">(<b>omc</b> RLC circuit simulation)</p>
 </div>
-<p align="center">(<b>modelicac</b> RLC circuit simulation)   (<b>omc</b> RLC circuit simulation)</p>
 
 <div style="float:left; width:50%;">
-  <p align="center">
-    <img src="/img/modelicac_rot.png">
-  </p>
+  <p align="center"> <img src="/img/modelicac_rot.png"> </p>
+  <p align="center">(<b>modelicac</b> 2nd order model simulation)</p>
 </div>
-<p align="center">(<b>modelicac</b> 2nd order model simulation)</p>
 <div style="float:left; width:50%;">
-  <p align="center">
-    <img src="/img/omc_rot.png">
-  </p>
+  <p align="center"> <img src="/img/omc_rot.png"> </p>
+  <p align="center">(<b>omc</b> 2nd order model model simulation)</p>
 </div>
-<p align="center">(<b>omc</b> 2nd order model model simulation)</p>
 
 <div style="float:left; width:50%;">
-  <p align="center">
-    <img src="/img/modelicac_ball.png">
-  </p>
+  <p align="center"> <img src="/img/modelicac_ball.png"> </p>
+  <p align="center">(<b>modelicac</b> bouncing ball simulation)</p>
 </div>
-<p align="center">(<b>modelicac</b> bouncing ball simulation)</p>
 <div style="float:left; width:50%;">
-  <p align="center">
-    <img src="/img/omc_ball.png">
-  </p>
+  <p align="center"> <img src="/img/omc_ball.png"> </p>
+  <p align="center">(<b>omc</b> bouncing ball simulation)</p>
 </div>
-<p align="center">(<b>omc</b> bouncing ball simulation)</p>
 
 
 ### Persisting Issues
@@ -82,7 +67,7 @@ As seen in the last comparison, I still couldn't find a way to make the **FMI2**
 
 Another issue that prevented me from testing more **Xcos Modelica** examples was a bug in generation of **flattened** (all code combined into a single file) **.mo** files, where mathematical signs end up duplicated, causing errors in the following compilation, like in the one from **"Ball in a platform"** demo:
 
-{% highlight modelica %}
+{% highlight javascript %}
 class Ball_Platform_im
   parameter Real Ball_Platform1__g = 9.800000000000001;
   parameter Real Ball_Platform1__m1 = 0.5;
@@ -132,7 +117,7 @@ In the end, some aspects of this project ended up being more troublesome than ex
 
 On the other hand, I'm happy with all the learning experience and the fact that I was able to get the **OpenModelica** integration to work, to some extent. The **FMI2** specification, particularly, was a great finding that I surely intend to use for some of my future projects.
 
-From now on it's all about cleaning up/submitting everything and waiting for my mentors evaluation. I'm thankful for all the help they provided me and I'll respect any decision regarding this final phase.
+From now on it's all about cleaning up/submitting the code (hosted in a [public **GitHub** repository](https://github.com/Bitiquinho/Scilab-OpenModelica-Integration)) and waiting for my mentors evaluation. I'm thankful for all the help they provided me and I'll respect any decision regarding this final phase.
 
 That's it for this **2017 GSoC**. Thanks one more time for sticking with me over the course of this (northern) summer. 
 
