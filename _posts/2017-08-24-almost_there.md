@@ -28,27 +28,26 @@ Finally, comparison between the old **modelicac** compiler and **OpenModelica** 
   <p align="center">
     <img src="/img/modelicac_chaos.png">
   </p>
+  <p align="center">(<b>modelicac</b> "Chaos" model simulation)</p>
 </div>
-<p align="center">(<b>modelicac</b> "Chaos" model simulation)</p>
 <div style="float:left; width:50%;">
   <p align="center">
     <img src="/img/omc_chaos.png">
   </p>
+  <p align="center">(<b>omc</b> "Chaos" model simulation)</p>
 </div>
-<p align="center">(<b>omc</b> "Chaos" model simulation)</p>
 
 <div style="float:left; width:50%;">
   <p align="center">
     <img src="/img/modelicac_rlc.png">
   </p>
 </div>
-<p align="center">(<b>modelicac</b> RLC circuit simulation)</p>
 <div style="float:left; width:50%;">
   <p align="center">
     <img src="/img/omc_rlc.png">
   </p>
 </div>
-<p align="center">(<b>omc</b> RLC circuit simulation)</p>
+<p align="center">(<b>modelicac</b> RLC circuit simulation)   (<b>omc</b> RLC circuit simulation)</p>
 
 <div style="float:left; width:50%;">
   <p align="center">
@@ -83,7 +82,7 @@ As seen in the last comparison, I still couldn't find a way to make the **FMI2**
 
 Another issue that prevented me from testing more **Xcos Modelica** examples was a bug in generation of **flattened** (all code combined into a single file) **.mo** files, where mathematical signs end up duplicated, causing errors in the following compilation, like in the one from **"Ball in a platform"** demo:
 
-{% highlight python %}
+{% highlight modelica %}
 class Ball_Platform_im
   parameter Real Ball_Platform1__g = 9.800000000000001;
   parameter Real Ball_Platform1__m1 = 0.5;
