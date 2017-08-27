@@ -8,7 +8,7 @@ tags: [GSoC-2017, Scilab, Modelica]
 
 Hello again,
 
-The time has come and I can't go any further inside the ongoing **GSoC Final Term Evaluation** period. Therefore, I shall "lay down the pencil" and submit the work done so far.
+The time has come and I can't go any further inside the ongoing **GSoC Final Term Evaluation** period. Therefore, I shall "lay down the pencil" and submit [the work done so far](http://bitiquinho.github.io/feed-gsoc2017.xml).
 
 Fortunately, I have some new positive results to share.
 
@@ -106,9 +106,80 @@ end Ball_Platform_im;
 
 As the error is caused by a **third-party** tool, **OMCompiler**, I've submitted a [**bug report**](https://trac.openmodelica.org/OpenModelica/ticket/4503#ticket) for it to be fixed **upstream**.
 
+
+### Build System Integration
+
+One task that I ended up leaving to the end and didn't take the time to blog about before is the replacement of **modelicac** and [**OCaml**](https://ocaml.org/) sources by **OMCompiler** ones in **Scilab**'s repository and build process. For my work I could simply use a minimal system-wide version of **OpenModelica**, but providing it as a bundled tool is useful for systems where is not easy to get a clean **OMCompiler** install.
+
+Fortunately, **Scilab** uses the same [**autotools**](https://en.wikipedia.org/wiki/GNU_build_system) build system as the compiler, so integration is facilitated (but still cumbersome enough to make me hope for a [**CMake**](https://cmake.org/) solution, which is less powerful but easier to get).
+
+After some modifications to **OMCompiler** build scripts (which were still looking for unneeded dependencies for [minimal **omc-no-sim** target](({% post_url 2017-07-31-omc %}))), I've removed **modelicac** and **OCaml** entries from **Scilab**'s ones and added conditional support for our new tool.
+
+- In **scilab/configure.ac**:
+{% highlight bash %}
+# ...
+
+XCOS_ENABLE=no
+OMC_TARGET=""
+OMC_INSTALL_TARGET=""
+
+if test "$with_xcos" != no; then
+   AC_DEFINE([WITH_XCOS], [], [with XCos])
+
+   save_LIBS="$LIBS"
+
+   AC_CHECK_LIB([rt], [clock_gettime],
+              [RT_LIB="-lrt";
+              AC_DEFINE([HAVE_CLOCK_GETTIME], [1],[Whether clock_gettime is available]) ],
+        [AC_MSG_WARN([librt: library missing (Cannot find symbol clock_gettime). Check if librt is installed (it is usually provided by the libc) and if the version is correct])]
+   )
+   LIBS="$save_LIBS"
+   AC_SUBST(RT_LIB)
+
+
+#################
+## modelica compiler which only called when using Xcos
+#################
+
+   if test "$with_modelica" != no; then
+      CPPFLAGS="$CPPFLAGS -DH5_USE_18_API"
+      OMC_TARGET="modelica-compiler"
+      OMC_INSTALL_TARGET="install-modelica-compiler"
+      AC_CONFIG_FILES([
+      modules/scicos/src/modelica_compiler/Makefile
+     ])
+      AC_CONFIG_SUBDIRS([modules/scicos/src/modelica_compiler])
+      USE_METIS=0
+      WITH_UMFPACK=no
+      AC_SUBST(USE_METIS)
+      AC_SUBST(WITH_UMFPACK)
+   fi
+   XCOS_ENABLE=yes
+
+fi
+
+AC_SUBST(XCOS_ENABLE)
+AC_SUBST(OMC_TARGET)
+AC_SUBST(OMC_INSTALL_TARGET)
+
+# ...
+{% endhighlight %}
+
+- In **scilab/Makefile.in**:
+{% highlight bash %}
+# ...
+
+# Build modelica stuff
+modelica-compiler: $(MAKE) -C src/modelica_compiler omc-no-sim
+install-modelica-compiler: $(MAKE) -C src/modelica_compiler install
+
+# ...
+{% endhighlight %}
+
+
 ### Missing work
 
-Apart from necessary fixes, remaining work for offering a full **modelicac** replacement involves improving **Windows** (mainly **64 bits**) compatibility (the **FMI2** library imports are formed erratically, most probably a upstream problem as well) and completing the integration of **OMCompiler** into **Scilab**'s build process.
+Apart from necessary fixes, remaining work for offering a full **modelicac** replacement involves improving **Windows** (mainly **64 bits**) compatibility (the **FMI2** library imports are formed erratically, most probably a upstream problem as well) and better testing the integration of **OMCompiler** into **Scilab**'s build process.
 
 
 ### Final Thoughts
