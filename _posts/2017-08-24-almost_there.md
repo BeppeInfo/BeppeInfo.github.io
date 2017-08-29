@@ -143,16 +143,18 @@ if test "$with_xcos" != no; then
 
    if test "$with_modelica" != no; then
       CPPFLAGS="$CPPFLAGS -DH5_USE_18_API"
-      OMC_TARGET="modelica-compiler"
-      OMC_INSTALL_TARGET="install-modelica-compiler"
+      OMC_TARGET="modelica-compiler"                    # "make" command target 
+      OMC_INSTALL_TARGET="install-modelica-compiler"    # "make install" command target
       AC_CONFIG_FILES([
       modules/scicos/src/modelica_compiler/Makefile
      ])
       AC_CONFIG_SUBDIRS([modules/scicos/src/modelica_compiler])
       USE_METIS=0
       WITH_UMFPACK=no
+      OMBUILDDIR="../../"                               # put compiled binaries into modules/scicos/bin
       AC_SUBST(USE_METIS)
       AC_SUBST(WITH_UMFPACK)
+      AC_SUBST(OMBUILDDIR)
    fi
    XCOS_ENABLE=yes
 
@@ -170,9 +172,13 @@ AC_SUBST(OMC_INSTALL_TARGET)
 # ...
 
 # Build modelica stuff
-modelica-compiler: $(MAKE) -C src/modelica_compiler omc-no-sim
-install-modelica-compiler: $(MAKE) -C src/modelica_compiler install
-
+modelica-compiler: $(MAKE) -C modules/scicos/src/modelica_compiler omc-no-sim
+install-modelica-compiler: $(MAKE) -C modules/scicos/src/modelica_compiler install \
+	cp modules/scicos_blocks/includes/fmi2_wrapper.h $(DESTDIR)$(pkgincludedir)/fmi2_wrapper.h
+# ...
+all-am: Makefile $(PROGRAMS) $(SCRIPTS) $(DATA) all-local $(OMC_TARGET)
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am $(OMC_INSTALL_TARGET)
 # ...
 {% endhighlight %}
 

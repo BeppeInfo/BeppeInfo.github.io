@@ -214,8 +214,11 @@ function  ok = modelicac( model_flat_file, Jacobian, model_C_file, model_desc_fi
     // Generate OpenModelica script file (builds FMU package with partial derivative support and unzips it)
     compile_commands = [];
     compile_commands($ + 1) = "setModelicaPath(""" + model_path + """); getErrorString();"
+    if getos() == "Windows" then
+        compile_commands($ + 1) = "setCommandLineOptions(""+target=msvc""); getErrorString();";
+    end
     if Jacobian then
-        compile_commands($ + 1) = "setCommandLineOptions(""--debug=fmuExperimental""); getErrorString();";
+        compile_commands($ + 1) = "setDebugFlags(""fmuExperimental""); getErrorString();";
     end
     compile_commands($ + 1) = "loadFile(""" + model_flat_name + flat_ext + """); getErrorString();";
     compile_commands($ + 1) = "translateModelFMU(" + model_name + "); getErrorString();";
@@ -297,17 +300,14 @@ function [ok,name,guid,nipar,nrpar,nopar,nz,nx,nx_der,nx_ns,nin,nout,nm,ng,dep_u
     // Read XML file data into a tree-like native data structure
     model_desc_tree = xmlRead( model_desc_file );
     
-    name = model_desc_tree.root.attributes( "modelName" );
-    guid = model_desc_tree.root.attributes( "guid" );
-    
-    [nipar,nrpar,nopar,nz,nx,nx_der,nx_ns,nin,nout,nm,ng,dep_u] = reading_incidence( model_desc_tree )
+    [name,guid,nipar,nrpar,nopar,nz,nx,nx_der,nx_ns,nin,nout,nm,ng,dep_u] = reading_incidence( model_desc_file )
 
     // ...
 
 {% endhighlight %}
 
 {% highlight javascript %}
-function [nipar,nrpar,nopar,nz,nx,nx_der,nx_ns,nin,nout,nm,ng,dep_u] = reading_incidence( model_desc_file )
+function [name,guid,nipar,nrpar,nopar,nz,nx,nx_der,nx_ns,nin,nout,nm,ng,dep_u] = reading_incidence( model_desc_file )
     // this function creates the matrix dep_u given by the xml format.
     // It is used for modelica compiler.
     // number of lines represents the number of input, number of columns represents the number of outputs.
@@ -378,8 +378,9 @@ function ok = Link_modelica_C( model_C_file, model_path )
     // Define FMI2 headers include directory 
     model_include_path = model_path + "/" + model_name + "/sources/include/fmi2/";
     
-    // Add dynamic libraries to linkage list
-    model_libs = [];
+    // Add linked libraries list
+    model_libs = [ model_libs_path + model_name + getdynlibext() ];
+    
     // ...
 
     // Define list of directories to be searched for *.h
