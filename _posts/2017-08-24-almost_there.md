@@ -143,7 +143,7 @@ if test "$with_xcos" != no; then
 
    if test "$with_modelica" != no; then
       CPPFLAGS="$CPPFLAGS -DH5_USE_18_API"
-      OMC_TARGET="modelica-compiler"                    # "make" command target 
+      OMC_TARGET="modelica-compiler"                    # "make" command target
       OMC_INSTALL_TARGET="install-modelica-compiler"    # "make install" command target
       AC_CONFIG_FILES([
       modules/scicos/src/modelica_compiler/Makefile
@@ -183,9 +183,9 @@ install-am: all-am
 {% endhighlight %}
 
 
-### Missing work
+### Missing Work
 
-Apart from necessary fixes, remaining work for offering a full **modelicac** replacement involves improving **Windows** (mainly **64 bits**) compatibility (the **FMI2** library imports are formed erratically, most probably a upstream problem as well) and better testing the integration of **OMCompiler** into **Scilab**'s build process.
+Apart from necessary fixes, remaining work for offering a full **modelicac** replacement involves improving **Windows** (mainly **64 bits**) compatibility (the **FMI2** library imports are formed erratically, [most probably an upstream problem as well](https://trac.openmodelica.org/OpenModelica/ticket/3790)) and better testing the integration of **OMCompiler** into **Scilab**'s build process.
 
 
 ### Final Thoughts
@@ -196,6 +196,6 @@ On the other hand, I'm happy with all the learning experience and the fact that 
 
 From now on it's all about cleaning up/submitting the code (hosted in a [public **GitHub** repository](https://github.com/Bitiquinho/Scilab-OpenModelica-Integration)) and waiting for my mentors evaluation. I'm thankful for all the help they provided me and I'll respect any decision regarding this final phase.
 
-That's it for this **2017 GSoC**. Thanks one more time for sticking with me over the course of this (northern) summer. 
+That's it for this **2017 GSoC**. Thanks one more time for sticking with me over the course of this (northern) summer.
 
 I hope to come back soon with new things to show.
