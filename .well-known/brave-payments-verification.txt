@@ -1,0 +1,4 @@
+This is a Brave Payments publisher verification file.
+
+Domain: bitiquinho.github.io
+Token: 3602485e0062c626a1d912135cd17507ab46adf67e4b97cf5940b3aa73b618fa
